@@ -81,7 +81,7 @@ export default function App() {
       if (res.status === 401 && token) {
         setToken(null);
         setUser(null);
-        localStorage.removeItem('lms_token');
+        localStorage.removeItem('lms_jwt');
         localStorage.removeItem('lms_user');
         setGuestTab('login');
         notify('Session expired. Please sign in again.', 'info');
@@ -269,7 +269,7 @@ export default function App() {
       const res = await api('/api/v1/auth/login', 'POST', { email, password });
       setToken(res.data.token);
       setUser(res.data.user);
-      localStorage.setItem('lms_token', res.data.token);
+      localStorage.setItem('lms_jwt', res.data.token);
       localStorage.setItem('lms_user', JSON.stringify(res.data.user));
       notify(`Welcome back, ${res.data.user.name}! Entering library workspace...`, 'success');
       setActiveTab('catalog');
@@ -295,10 +295,6 @@ export default function App() {
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     if (authMode === 'login') {
-      if (!authEmail.trim() && !authPassword) {
-        notify('Auto-signing in as Administrator demo profile...', 'info');
-        return directLogin('admin@library.com', 'Admin@123');
-      }
       if (!authEmail.trim()) {
         notify('Please enter your email address.', 'error');
         return;
@@ -548,7 +544,8 @@ export default function App() {
                         value={authEmail}
                         onChange={e => setAuthEmail(e.target.value)}
                         className="form-input"
-                        placeholder="admin@library.com"
+                        placeholder="Enter your email"
+                        autoComplete="email"
                       />
                     </div>
 
@@ -556,7 +553,7 @@ export default function App() {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                         <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
                         {authMode === 'login' && (
-                          <span onClick={() => notify('Demo passwords: Admin@123 / Librarian@123 / Member@123', 'info')} className="libib-forgot-link">Forgot password?</span>
+                          <span onClick={() => notify('Please contact library administrator for password assistance.', 'info')} className="libib-forgot-link">Forgot password?</span>
                         )}
                       </div>
                       <div className="password-input-wrap">
@@ -565,7 +562,8 @@ export default function App() {
                           value={authPassword}
                           onChange={e => setAuthPassword(e.target.value)}
                           className="form-input"
-                          placeholder="Admin@123"
+                          placeholder="Enter your password"
+                          autoComplete="current-password"
                         />
                         <button
                           type="button"
@@ -576,6 +574,18 @@ export default function App() {
                           <span className="pass-eye-icon">{showPassword ? '🙈' : '👁️'}</span>
                           <span className="pass-toggle-text">{showPassword ? 'Hide' : 'Show'}</span>
                         </button>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.6rem' }}>
+                        <input
+                          type="checkbox"
+                          id="chkReactShowPassword"
+                          checked={showPassword}
+                          onChange={e => setShowPassword(e.target.checked)}
+                          style={{ cursor: 'pointer', width: 16, height: 16, accentColor: 'var(--forest-accent)' }}
+                        />
+                        <label htmlFor="chkReactShowPassword" style={{ fontSize: '0.85rem', color: 'var(--sand-light)', cursor: 'pointer', userSelect: 'none' }}>
+                          Show password
+                        </label>
                       </div>
                     </div>
 

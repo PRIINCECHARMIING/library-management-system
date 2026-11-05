@@ -1194,7 +1194,10 @@
       </div>
 
       <nav id="navLinksContainer" class="nav-links">
-        <!-- Rendered dynamically -->
+        <button type="button" onclick="showGuestTab('login')" id="guest-nav-login" class="nav-btn active">🔑 Sign In</button>
+        <button type="button" onclick="showGuestTab('catalog')" id="guest-nav-catalog" class="nav-btn">📚 Catalog</button>
+        <button type="button" onclick="showGuestTab('about')" id="guest-nav-about" class="nav-btn">🏛️ Campus & About</button>
+        <button type="button" onclick="showGuestTab('security')" id="guest-nav-security" class="nav-btn">🔒 Security Specs</button>
       </nav>
 
       <div id="authHeaderArea">
@@ -1222,20 +1225,24 @@
 
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input type="email" id="inputEmail" class="form-input" placeholder="admin@library.com">
+            <input type="email" id="inputEmail" class="form-input" placeholder="Enter your email" autocomplete="email">
           </div>
 
           <div class="form-group">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;" id="forgotLinkWrap">
               <label class="form-label" style="margin-bottom: 0;">Password</label>
-              <a href="javascript:void(0)" onclick="notify('Demo passwords: Admin@123 / Librarian@123 / Member@123', 'info')" class="libib-forgot-link">Forgot password?</a>
+              <a href="javascript:void(0)" onclick="notify('Please contact library administrator for password assistance.', 'info')" class="libib-forgot-link">Forgot password?</a>
             </div>
             <div class="password-input-wrap">
-              <input type="password" id="inputPassword" class="form-input" placeholder="Admin@123">
+              <input type="password" id="inputPassword" class="form-input" placeholder="Enter your password" autocomplete="current-password">
               <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('inputPassword', this)" title="Show / Hide Password">
                 <span class="pass-eye-icon">👁️</span>
                 <span class="pass-toggle-text">Show</span>
               </button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem;">
+              <input type="checkbox" id="chkShowPassword" onchange="syncPasswordCheckbox(this)" style="cursor: pointer; width: 16px; height: 16px; accent-color: var(--forest-accent);">
+              <label for="chkShowPassword" style="font-size: 0.85rem; color: var(--sand-light); cursor: pointer; user-select: none;">Show password</label>
             </div>
           </div>
 
@@ -1642,9 +1649,33 @@
        JAVASCRIPT CONTROLLER
        ========================================================================= -->
   <script>
+    function safeGetStorage(key) {
+      try {
+        return window.localStorage ? window.localStorage.getItem(key) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+    function safeSetStorage(key, val) {
+      try {
+        if (window.localStorage) window.localStorage.setItem(key, val);
+      } catch (e) {}
+    }
+    function safeRemoveStorage(key) {
+      try {
+        if (window.localStorage) window.localStorage.removeItem(key);
+      } catch (e) {}
+    }
+
     const API_MASTER_KEY = 'lms_master_key_live_9948271635882';
-    let jwtToken = localStorage.getItem('lms_jwt') || null;
-    let currentUser = JSON.parse(localStorage.getItem('lms_user') || 'null');
+    let jwtToken = safeGetStorage('lms_jwt') || null;
+    let currentUser = null;
+    try {
+      const uStr = safeGetStorage('lms_user');
+      if (uStr) currentUser = JSON.parse(uStr);
+    } catch (e) {
+      currentUser = null;
+    }
 
     let booksData = [];
     let categoriesData = [];
@@ -1655,6 +1686,7 @@
     // Toast helper
     function notify(message, type = 'info') {
       const container = document.getElementById('toastContainer');
+      if (!container) return;
       const toast = document.createElement('div');
       toast.className = `toast ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : 'toast-info'}`;
       toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span>${message}</span>`;
@@ -1686,8 +1718,8 @@
         if (res.status === 401 && jwtToken) {
           jwtToken = null;
           currentUser = null;
-          localStorage.removeItem('lms_jwt');
-          localStorage.removeItem('lms_user');
+          safeRemoveStorage('lms_jwt');
+          safeRemoveStorage('lms_user');
           renderViewState();
           notify('Session expired. Please sign in again.', 'info');
         }
@@ -1708,8 +1740,8 @@
         const res = await apiRequest('/api/v1/auth/login', 'POST', { email, password });
         jwtToken = res.data.token;
         currentUser = res.data.user;
-        localStorage.setItem('lms_jwt', jwtToken);
-        localStorage.setItem('lms_user', JSON.stringify(currentUser));
+        safeSetStorage('lms_jwt', jwtToken);
+        safeSetStorage('lms_user', JSON.stringify(currentUser));
         notify(`Welcome back, ${currentUser.name}! Entering library workspace...`, 'success');
         renderViewState();
         loadAllData();
@@ -1903,14 +1935,10 @@
 
     async function handleAuthFormSubmit(e) {
       if (e) e.preventDefault();
-      let email = document.getElementById('inputEmail')?.value?.trim();
-      let password = document.getElementById('inputPassword')?.value;
+      const email = document.getElementById('inputEmail')?.value?.trim();
+      const password = document.getElementById('inputPassword')?.value;
 
       if (publicAuthMode === 'login') {
-        if (!email && !password) {
-          notify('Auto-signing in as Administrator demo profile...', 'info');
-          return directLogin('admin@library.com', 'Admin@123');
-        }
         if (!email) return notify('Please enter your email address.', 'error');
         if (!password) return notify('Please enter your password.', 'error');
         await directLogin(email, password);
@@ -1924,8 +1952,8 @@
           const res = await apiRequest('/api/v1/auth/register', 'POST', { name, email, password, role });
           jwtToken = res.data.token;
           currentUser = res.data.user;
-          localStorage.setItem('lms_jwt', jwtToken);
-          localStorage.setItem('lms_user', JSON.stringify(currentUser));
+          safeSetStorage('lms_jwt', jwtToken);
+          safeSetStorage('lms_user', JSON.stringify(currentUser));
           notify(`Enrolled successfully! Welcome ${currentUser.name}.`, 'success');
           renderViewState();
           loadAllData();
@@ -1938,8 +1966,8 @@
     function signOut() {
       jwtToken = null;
       currentUser = null;
-      localStorage.removeItem('lms_jwt');
-      localStorage.removeItem('lms_user');
+      safeRemoveStorage('lms_jwt');
+      safeRemoveStorage('lms_user');
       renderViewState();
       notify('Signed out of the library.', 'info');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2453,11 +2481,21 @@
       animate();
     })();
 
-    // Startup
-    document.addEventListener('DOMContentLoaded', () => {
-      renderViewState();
-      loadAllData();
-    });
+    // Startup (Bulletproof execution whether DOM is already interactive or loading)
+    function initLibraryApp() {
+      try {
+        renderViewState();
+        loadAllData();
+      } catch (err) {
+        console.error('Initialization error:', err);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLibraryApp);
+    } else {
+      initLibraryApp();
+    }
   </script>
 </body>
 </html>
