@@ -499,185 +499,391 @@ export default function App() {
       </header>
 
       {/* =========================================================================
-           VIEW 1: PUBLIC HOMEPAGE & LOGIN (WHEN NOT LOGGED IN — LIBIB STYLE)
+           VIEW 1: PUBLIC HOMEPAGE & GUEST VIEWS (WHEN NOT LOGGED IN — LIBIB STYLE)
            ========================================================================= */}
       {!user && (
         <main className="page-container">
-          <div className="public-hero">
-            <div className="public-badge">
-              <span>🏛️ Academic Cloud Library & Cataloging Platform</span>
-            </div>
-            <h1 className="public-title">
-              Catalog, Circulate & Discover <span>Knowledge in the Cloud</span>
-            </h1>
-            <p className="public-subtitle">
-              A sanctuary for research, technology, and literature. Manage campus circulation, reserve academic publications, and access your digital patron profile with zero friction.
-            </p>
-          </div>
-
-          {/* Centered Libib-Style Authentication Container (https://www.libib.com/login) */}
-          <div className="libib-auth-container" id="authPortalSection">
-            <div className="libib-auth-card">
-              <h2 className="libib-auth-title">
-                {authMode === 'login' ? 'Manager Login' : 'Create Account'}
-              </h2>
-
-              <form onSubmit={handleAuthSubmit}>
-                {authMode === 'register' && (
-                  <div className="form-group">
-                    <label className="form-label">Full Name</label>
-                    <input type="text" value={authName} onChange={e => setAuthName(e.target.value)} required className="form-input" placeholder="Enter your full name" />
-                  </div>
-                )}
-
-                <div className="form-group">
-                  <label className="form-label">Email</label>
-                  <input type="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} required className="form-input" placeholder="Enter your email" />
+          {guestTab === 'login' && (
+            <>
+              <div className="public-hero">
+                <div className="public-badge">
+                  <span>🏛️ Academic Cloud Library & Cataloging Platform</span>
                 </div>
+                <h1 className="public-title">
+                  Catalog, Circulate & Discover <span>Knowledge in the Cloud</span>
+                </h1>
+                <p className="public-subtitle">
+                  A sanctuary for research, technology, and literature. Manage campus circulation, reserve academic publications, and access your digital patron profile with zero friction.
+                </p>
+              </div>
 
-                <div className="form-group">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
-                    {authMode === 'login' && (
-                      <span onClick={() => notify('Contact system administrator to reset credentials.', 'info')} className="libib-forgot-link">Forgot password?</span>
+              {/* Centered Libib-Style Authentication Container (https://www.libib.com/login) */}
+              <div className="libib-auth-container" id="authPortalSection">
+                <div className="libib-auth-card">
+                  <h2 className="libib-auth-title">
+                    {authMode === 'login' ? 'Manager Login' : 'Create Account'}
+                  </h2>
+
+                  <form onSubmit={handleAuthSubmit}>
+                    {authMode === 'register' && (
+                      <div className="form-group">
+                        <label className="form-label">Full Name</label>
+                        <input
+                          type="text"
+                          value={authName}
+                          onChange={e => setAuthName(e.target.value)}
+                          required
+                          className="form-input"
+                          placeholder="Enter your full name"
+                        />
+                      </div>
+                    )}
+
+                    <div className="form-group">
+                      <label className="form-label">Email</label>
+                      <input
+                        type="email"
+                        value={authEmail}
+                        onChange={e => setAuthEmail(e.target.value)}
+                        required
+                        className="form-input"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
+                        {authMode === 'login' && (
+                          <span onClick={() => notify('Contact system administrator (admin@library.com) to reset credentials.', 'info')} className="libib-forgot-link">Forgot password?</span>
+                        )}
+                      </div>
+                      <div className="password-input-wrap">
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={authPassword}
+                          onChange={e => setAuthPassword(e.target.value)}
+                          required
+                          className="form-input"
+                          placeholder="Enter your password"
+                        />
+                        <button
+                          type="button"
+                          className="btn-toggle-pass"
+                          onClick={() => setShowPassword(prev => !prev)}
+                          title={showPassword ? 'Hide password' : 'Show password'}
+                        >
+                          <span className="pass-eye-icon">{showPassword ? '🙈' : '👁️'}</span>
+                          <span className="pass-toggle-text">{showPassword ? 'Hide' : 'Show'}</span>
+                        </button>
+                      </div>
+                      <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--sand-300)', cursor: 'pointer', userSelect: 'none' }}>
+                          <input
+                            type="checkbox"
+                            checked={showPassword}
+                            onChange={e => setShowPassword(e.target.checked)}
+                            style={{ cursor: 'pointer', accentColor: 'var(--purple-electric)', width: 14, height: 14 }}
+                          />
+                          <span>Show password</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {authMode === 'register' && (
+                      <div className="form-group">
+                        <label className="form-label">Patron Role</label>
+                        <select value={authRole} onChange={e => setAuthRole(e.target.value)} className="form-select">
+                          <option value="member">Member (Patron)</option>
+                          <option value="librarian">Librarian (Staff)</option>
+                          <option value="admin">Administrator</option>
+                        </select>
+                      </div>
+                    )}
+
+                    <button type="submit" className="btn btn-purple btn-libib-submit">
+                      {authMode === 'login' ? 'Log In' : 'Sign Up'}
+                    </button>
+                  </form>
+
+                  <div className="libib-signup-prompt">
+                    {authMode === 'login' ? (
+                      <>
+                        Don't have an account? <button type="button" onClick={() => setAuthMode('register')}>Sign Up!</button>
+                      </>
+                    ) : (
+                      <>
+                        Already have an account? <button type="button" onClick={() => setAuthMode('login')}>Log In!</button>
+                      </>
                     )}
                   </div>
-                  <div className="password-input-wrap">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={authPassword}
-                      onChange={e => setAuthPassword(e.target.value)}
-                      required
-                      className="form-input"
-                      placeholder="Enter your password"
-                    />
-                    <button
-                      type="button"
-                      className="btn-toggle-pass"
-                      onClick={() => setShowPassword(prev => !prev)}
-                      title={showPassword ? 'Hide password' : 'Show password'}
-                    >
-                      <span className="pass-eye-icon">{showPassword ? '🙈' : '👁️'}</span>
-                    </button>
+                </div>
+              </div>
+
+              {/* LIBIB-STYLE FEATURE SHOWCASE */}
+              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--sand-50)' }}>Built for Academic Collections & Students</h2>
+                <p style={{ fontSize: '0.9rem', color: 'var(--sand-300)', marginTop: '0.3rem' }}>Intuitive cataloging, barcode/ISBN search, and smart circulation.</p>
+              </div>
+
+              <div className="feature-grid">
+                <div className="feature-card">
+                  <div className="feature-icon">🔍</div>
+                  <h3 className="feature-title">Fast Cataloging & Real-Time Stock</h3>
+                  <p className="feature-text">Search by Title, Author, or ISBN with immediate availability indicators, category filtering, and shelf location codes.</p>
+                </div>
+
+                <div className="feature-card">
+                  <div className="feature-icon">🔄</div>
+                  <h3 className="feature-title">Smart 14-Day Circulation</h3>
+                  <p className="feature-text">Automatic 14-day checkout windows, fine calculations ($0.50/day policy), and 1-click inventory replenishment on return.</p>
+                </div>
+
+                <div className="feature-card">
+                  <div className="feature-icon">🪪</div>
+                  <h3 className="feature-title">Holographic Patron Cards</h3>
+                  <p className="feature-text">Digital membership cards for university patrons featuring verified identification, member tiers, and password management.</p>
+                </div>
+
+                <div className="feature-card">
+                  <div className="feature-icon">🛡️</div>
+                  <h3 className="feature-title">Enterprise Security & RBAC</h3>
+                  <p className="feature-text">3-Tier role authorization (Admin, Librarian, Member) with dual TLS 1.3 ports (8000 & 8443) and API Key verification.</p>
+                </div>
+              </div>
+            </>
+          )}
+
+          {guestTab === 'catalog' && (
+            <section style={{ marginBottom: '3rem' }}>
+              <div className="app-ribbon" style={{ marginTop: '0.5rem', marginBottom: '2rem' }}>
+                <div className="ribbon-stats">
+                  <div className="ribbon-stat-item">
+                    <span className="ribbon-stat-val">{stats.titles}</span>
+                    <span className="ribbon-stat-lbl">📚 Total Titles</span>
+                  </div>
+                  <div className="ribbon-stat-item">
+                    <span className="ribbon-stat-val" style={{ color: 'var(--forest-200)' }}>{stats.available}</span>
+                    <span className="ribbon-stat-lbl">✅ Available Copies</span>
+                  </div>
+                  <div className="ribbon-stat-item">
+                    <span className="ribbon-stat-val" style={{ color: 'var(--amber)' }}>{stats.borrowed}</span>
+                    <span className="ribbon-stat-lbl">⏳ Active Borrowings</span>
+                  </div>
+                  <div className="ribbon-stat-item">
+                    <span className="ribbon-stat-val" style={{ color: 'var(--purple-electric)' }}>{stats.members}</span>
+                    <span className="ribbon-stat-lbl">👥 Patrons</span>
                   </div>
                 </div>
 
-                {authMode === 'register' && (
-                  <div className="form-group">
-                    <label className="form-label">Patron Role</label>
-                    <select value={authRole} onChange={e => setAuthRole(e.target.value)} className="form-select">
-                      <option value="member">Member (Patron)</option>
-                      <option value="librarian">Librarian (Staff)</option>
-                      <option value="admin">Administrator</option>
-                    </select>
-                  </div>
-                )}
-
-                <button type="submit" className="btn btn-purple btn-libib-submit">
-                  {authMode === 'login' ? 'Log In' : 'Sign Up'}
+                <button type="button" onClick={() => setGuestTab('login')} className="btn btn-purple btn-sm">
+                  🔐 Sign In to Borrow
                 </button>
-              </form>
-
-              <div className="libib-signup-prompt">
-                {authMode === 'login' ? (
-                  <>
-                    Don't have an account? <button type="button" onClick={() => setAuthMode('register')}>Sign Up!</button>
-                  </>
-                ) : (
-                  <>
-                    Already have an account? <button type="button" onClick={() => setAuthMode('login')}>Log In!</button>
-                  </>
-                )}
               </div>
-            </div>
-          </div>
 
-          {/* LIBIB-STYLE FEATURE SHOWCASE */}
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--sand-50)' }}>Built for Academic Collections & Students</h2>
-            <p style={{ fontSize: '0.9rem', color: 'var(--sand-300)', marginTop: '0.3rem' }}>Intuitive cataloging, barcode/ISBN search, and smart circulation.</p>
-          </div>
+              <div className="catalog-controls">
+                <div className="search-row">
+                  <div className="search-input-wrap">
+                    <span className="search-icon">🔍</span>
+                    <input
+                      type="text"
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                      placeholder="Filter collection by Title, Author, or ISBN..."
+                      className="catalog-search-input"
+                    />
+                  </div>
+                  <select value={sortOption} onChange={e => setSortOption(e.target.value)} className="form-select" style={{ width: 'auto' }}>
+                    <option value="default">Sort by: Default</option>
+                    <option value="title-asc">Title: A to Z</option>
+                    <option value="year-desc">Published: Newest</option>
+                    <option value="copies-desc">Most Available</option>
+                  </select>
+                </div>
 
-          <div className="feature-grid">
-            <div className="feature-card">
-              <div className="feature-icon">🔍</div>
-              <h3 className="feature-title">Fast Cataloging & Real-Time Stock</h3>
-              <p className="feature-text">Search by Title, Author, or ISBN with immediate availability indicators, category filtering, and shelf location codes.</p>
-            </div>
+                <div className="genre-chips">
+                  <button onClick={() => setSelectedCategory('')} className={`chip ${!selectedCategory ? 'active' : ''}`}>All Genres</button>
+                  {categories.map(c => (
+                    <button key={c.id} onClick={() => setSelectedCategory(c.id)} className={`chip ${selectedCategory === c.id ? 'active' : ''}`}>{c.name}</button>
+                  ))}
+                </div>
+              </div>
 
-            <div className="feature-card">
-              <div className="feature-icon">🔄</div>
-              <h3 className="feature-title">Smart 14-Day Circulation</h3>
-              <p className="feature-text">Automatic 14-day checkout windows, fine calculations ($0.50/day policy), and 1-click inventory replenishment on return.</p>
-            </div>
+              <div className="books-grid">
+                {filteredBooks.map(b => {
+                  const isAvailable = b.availableCopies > 0;
+                  return (
+                    <div key={b.id} className="book-card">
+                      <div className="book-tile-cover">
+                        <div style={{ maxWidth: '80%' }}>
+                          <div className="book-tile-title">{b.title}</div>
+                          <div className="book-tile-author">by {b.author}</div>
+                        </div>
+                        <div className="book-tile-icon">📖</div>
+                      </div>
 
-            <div className="feature-card">
-              <div className="feature-icon">🪪</div>
-              <h3 className="feature-title">Holographic Patron Cards</h3>
-              <p className="feature-text">Digital membership cards for university patrons featuring verified identification, member tiers, and password management.</p>
-            </div>
+                      <div className="book-meta">
+                        <span className="book-cat-badge">{b.categoryName || 'General'}</span>
+                        <span className={`stock-badge ${isAvailable ? 'stock-available' : 'stock-out'}`}>
+                          <span className="stock-dot"></span>
+                          <span>{isAvailable ? `${b.availableCopies} of ${b.totalCopies} Available` : 'Checked Out'}</span>
+                        </span>
+                      </div>
 
-            <div className="feature-card">
-              <div className="feature-icon">🛡️</div>
-              <h3 className="feature-title">Enterprise Security & RBAC</h3>
-              <p className="feature-text">3-Tier role authorization (Admin, Librarian, Member) with dual TLS 1.3 ports (8000 & 8443) and API Key verification.</p>
-            </div>
-          </div>
+                      <p className="book-desc">{b.description || 'Archived academic publication in University library collection.'}</p>
 
-          {/* CAMPUS GUIDE & FACILITIES */}
-          <div className="feature-card" id="campusAboutSection" style={{ marginBottom: '4rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--sand-border)', paddingBottom: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-              <div>
+                      <div className="book-specs">
+                        <span>ISBN: {b.isbn}</span>
+                        <span>{b.location || 'Shelf CS-01'}</span>
+                      </div>
+
+                      <div className="book-actions">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            notify('Please sign in or create an account to check out books!', 'info');
+                            setGuestTab('login');
+                            const el = document.getElementById('authPortalSection');
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          disabled={!isAvailable}
+                          className="btn btn-purple btn-sm"
+                          style={{ flex: 1 }}
+                        >
+                          {isAvailable ? '⚡ Borrow / Check Out' : 'All Checked Out'}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {guestTab === 'about' && (
+            <section style={{ marginBottom: '3rem' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
                 <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sand-50)' }}>Campus Facilities & Lending Regulations</h2>
                 <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', marginTop: '0.2rem' }}>Central Academic Campus Wing &bull; Founded 1984</p>
               </div>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--forest-200)', background: 'var(--emerald-bg)', padding: '0.3rem 0.8rem', borderRadius: '9999px' }}>
-                ● Open Today: 08:00 AM – 09:00 PM
-              </div>
-            </div>
 
-            <div className="grid-2">
-              <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--sand-50)', marginBottom: '0.75rem' }}>Operating Hours</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.85rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.4rem', borderBottom: '1px solid var(--sand-border)' }}>
-                    <span style={{ color: 'var(--sand-400)' }}>Monday – Thursday</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--sand-100)' }}>08:00 AM – 10:00 PM</span>
+              <div className="feature-card" style={{ marginBottom: '2rem' }}>
+                <div className="grid-2">
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--sand-50)', marginBottom: '0.75rem' }}>Operating Hours</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', fontSize: '0.85rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.4rem', borderBottom: '1px solid var(--sand-border)' }}>
+                        <span style={{ color: 'var(--sand-400)' }}>Monday – Thursday</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--sand-100)' }}>08:00 AM – 10:00 PM</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.4rem', borderBottom: '1px solid var(--sand-border)' }}>
+                        <span style={{ color: 'var(--sand-400)' }}>Friday</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--sand-100)' }}>08:00 AM – 08:00 PM</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.4rem', borderBottom: '1px solid var(--sand-border)' }}>
+                        <span style={{ color: 'var(--sand-400)' }}>Saturday</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--sand-100)' }}>10:00 AM – 06:00 PM</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--sand-400)' }}>Sunday</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--amber)' }}>12:00 PM – 05:00 PM</span>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.4rem', borderBottom: '1px solid var(--sand-border)' }}>
-                    <span style={{ color: 'var(--sand-400)' }}>Friday</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--sand-100)' }}>08:00 AM – 08:00 PM</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.4rem', borderBottom: '1px solid var(--sand-border)' }}>
-                    <span style={{ color: 'var(--sand-400)' }}>Saturday</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--sand-100)' }}>10:00 AM – 06:00 PM</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--sand-400)' }}>Sunday</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--amber)' }}>12:00 PM – 05:00 PM</span>
+
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--sand-50)', marginBottom: '0.75rem' }}>Circulation Regulations</h3>
+                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--sand-200)' }}>
+                      <li style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+                        <span style={{ color: 'var(--forest-300)', fontWeight: 800 }}>✓</span>
+                        <span><strong>14-Day Lending Period:</strong> Standard loan duration for all academic books.</span>
+                      </li>
+                      <li style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+                        <span style={{ color: 'var(--forest-300)', fontWeight: 800 }}>✓</span>
+                        <span><strong>Max 5 Active Loans:</strong> Patrons may carry up to 5 concurrent loans.</span>
+                      </li>
+                      <li style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+                        <span style={{ color: 'var(--amber)', fontWeight: 800 }}>✓</span>
+                        <span><strong>Late Return Policy:</strong> Overdue fines accrue at <strong>$0.50/day</strong>.</span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
 
-              <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--sand-50)', marginBottom: '0.75rem' }}>Circulation Regulations</h3>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: '0.85rem', color: 'var(--sand-200)' }}>
-                  <li style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--forest-300)', fontWeight: 800 }}>✓</span>
-                    <span><strong>14-Day Lending Period:</strong> Standard loan duration for all academic books.</span>
-                  </li>
-                  <li style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--forest-300)', fontWeight: 800 }}>✓</span>
-                    <span><strong>Max 5 Active Loans:</strong> Patrons may carry up to 5 concurrent loans.</span>
-                  </li>
-                  <li style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
-                    <span style={{ color: 'var(--amber)', fontWeight: 800 }}>✓</span>
-                    <span><strong>Late Return Policy:</strong> Overdue fines accrue at <strong>$0.50/day</strong>.</span>
-                  </li>
-                </ul>
+              <div className="grid-3">
+                <div className="feature-card">
+                  <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>💻</div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--sand-50)' }}>Level 2 STEM & Coding Lab</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', lineHeight: 1.6 }}>
+                    60 high-speed dual-display workstations, direct repository access to IEEE Xplore, ACM Digital Library, and SpringerLink journals.
+                  </p>
+                </div>
+
+                <div className="feature-card">
+                  <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>🤫</div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--sand-50)' }}>Level 3 Silent Carrels</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', lineHeight: 1.6 }}>
+                    Acoustically isolated private pods for deep focus, thesis writing, manuscript examination, and quiet research.
+                  </p>
+                </div>
+
+                <div className="feature-card">
+                  <div style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>☕</div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--sand-50)' }}>Level 1 Circulation & Media</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', lineHeight: 1.6 }}>
+                    Main information desk, book returns kiosk, study tables, campus coffee counter, and new arrivals display shelves.
+                  </p>
+                </div>
               </div>
-            </div>
-          </div>
+            </section>
+          )}
+
+          {guestTab === 'security' && (
+            <section style={{ marginBottom: '3rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sand-50)' }}>Enterprise Security Architecture</h2>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', marginTop: '0.2rem' }}>Multi-layered security across transport, application, and persistence layers.</p>
+                </div>
+                <a href="/api/v1/health" target="_blank" rel="noreferrer" className="btn btn-sand btn-sm">View Health API ↗</a>
+              </div>
+
+              <div className="feature-grid">
+                <div className="feature-card">
+                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔒</div>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--sand-50)' }}>Dual HTTPS & TLSv1.3</h4>
+                  <p style={{ fontSize: '0.82rem', color: 'var(--sand-300)', lineHeight: 1.6, marginTop: '0.3rem' }}>
+                    Dual server on ports 8000 and 8443 with TLS 1.2+ minimum, modern cipher suites, and auto-generated X.509 certificates.
+                  </p>
+                </div>
+
+                <div className="feature-card">
+                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔑</div>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--sand-50)' }}>API Key Gateway</h4>
+                  <p style={{ fontSize: '0.82rem', color: 'var(--sand-300)', lineHeight: 1.6, marginTop: '0.3rem' }}>
+                    Protected routes mandate <code style={{ color: 'var(--purple-electric)' }}>x-api-key</code> validation with active and revocation checks.
+                  </p>
+                </div>
+
+                <div className="feature-card">
+                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🛡️</div>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--sand-50)' }}>3-Tier RBAC & JWT</h4>
+                  <p style={{ fontSize: '0.82rem', color: 'var(--sand-300)', lineHeight: 1.6, marginTop: '0.3rem' }}>
+                    Cryptographically signed HS256 tokens enforcing granular Admin, Librarian, and Member authorization.
+                  </p>
+                </div>
+
+                <div className="feature-card">
+                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>⚡</div>
+                  <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--sand-50)' }}>Bcrypt & Zod Validation</h4>
+                  <p style={{ fontSize: '0.82rem', color: 'var(--sand-300)', lineHeight: 1.6, marginTop: '0.3rem' }}>
+                    10 salt rounds for password hashing. Strict declarative Zod input validation on all parameters.
+                  </p>
+                </div>
+              </div>
+            </section>
+          )}
         </main>
       )}
 
@@ -1166,11 +1372,11 @@ export default function App() {
       <footer className="libib-site-footer">
         <div className="libib-footer-inner">
           <div className="libib-footer-links">
-            <button type="button" onClick={() => user ? setActiveTab('catalog') : setGuestTab('catalog')}>Catalog</button>
+            <button type="button" onClick={() => { if (user) setActiveTab('catalog'); else setGuestTab('catalog'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Catalog</button>
             <span>&bull;</span>
-            <button type="button" onClick={() => user ? setActiveTab('about') : setGuestTab('about')}>Campus & Stacks</button>
+            <button type="button" onClick={() => { if (user) setActiveTab('about'); else setGuestTab('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Campus & Stacks</button>
             <span>&bull;</span>
-            <button type="button" onClick={() => user ? setActiveTab('security') : setGuestTab('security')}>Security</button>
+            <button type="button" onClick={() => { if (user) setActiveTab('security'); else setGuestTab('security'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Security</button>
             <span>&bull;</span>
             <button type="button" onClick={() => notify('Athena Cloud Services: 100% Operational', 'success')}>Cloud Status</button>
           </div>
