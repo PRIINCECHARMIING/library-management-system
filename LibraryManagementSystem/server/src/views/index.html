@@ -77,33 +77,114 @@
       background-attachment: fixed;
     }
 
-    /* Ambient Decorative Glows */
-    .ambient-glow-left {
+    /* ==========================================================================
+       DYNAMIC ANIMATED BACKGROUND ENGINE (AURORA, CYBER-GRID & KNOWLEDGE CANVAS)
+       ========================================================================== */
+    .ambient-canvas {
       position: fixed;
-      top: -160px;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    /* Ambient Cyber Grid Overlay */
+    .ambient-grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(212, 163, 115, 0.038) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(212, 163, 115, 0.038) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: radial-gradient(ellipse 80% 65% at 50% 50%, rgba(0,0,0,1) 40%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 65% at 50% 50%, rgba(0,0,0,1) 40%, transparent 100%);
+    }
+
+    /* Ambient Vertical Scanline Pulse */
+    .ambient-scanline {
+      position: fixed;
+      top: -30%;
+      left: 0;
+      width: 100vw;
+      height: 25%;
+      background: linear-gradient(180deg, transparent 0%, rgba(176, 38, 255, 0.06) 50%, rgba(45, 106, 79, 0.12) 80%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+      animation: scanBeam 16s ease-in-out infinite;
+    }
+    @keyframes scanBeam {
+      0% { top: -30%; opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.9; }
+      100% { top: 125%; opacity: 0; }
+    }
+
+    /* Multi-Layer Animated Aurora Orbs */
+    .aurora-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(95px);
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform, opacity;
+    }
+    .aurora-orb-1 {
+      width: 680px;
+      height: 680px;
+      top: -220px;
       left: -160px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(82, 183, 136, 0.3) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatOrb 18s ease-in-out infinite alternate;
+      background: radial-gradient(circle, rgba(45, 106, 79, 0.48) 0%, rgba(14, 42, 26, 0.22) 60%, transparent 80%);
+      animation: aurora1 22s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
     }
-    .ambient-glow-right {
-      position: fixed;
-      bottom: -160px;
-      right: -160px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-      animation: floatOrb 22s ease-in-out infinite alternate-reverse;
+    .aurora-orb-2 {
+      width: 720px;
+      height: 720px;
+      bottom: -240px;
+      right: -200px;
+      background: radial-gradient(circle, rgba(176, 38, 255, 0.38) 0%, rgba(121, 40, 202, 0.18) 55%, transparent 80%);
+      animation: aurora2 26s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate-reverse;
     }
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(40px, 30px) scale(1.08); }
-      100% { transform: translate(-20px, 50px) scale(0.95); }
+    .aurora-orb-3 {
+      width: 500px;
+      height: 500px;
+      top: 35%;
+      right: 12%;
+      background: radial-gradient(circle, rgba(212, 163, 115, 0.24) 0%, rgba(181, 147, 113, 0.08) 60%, transparent 80%);
+      animation: aurora3 19s ease-in-out infinite alternate;
+    }
+    .aurora-orb-4 {
+      width: 540px;
+      height: 540px;
+      bottom: 8%;
+      left: 8%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(8, 29, 17, 0.12) 60%, transparent 80%);
+      animation: aurora4 28s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes aurora1 {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      50% { transform: translate(65px, 45px) scale(1.14) rotate(45deg); }
+      100% { transform: translate(-35px, 85px) scale(0.92) rotate(90deg); }
+    }
+    @keyframes aurora2 {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      50% { transform: translate(-75px, -55px) scale(1.18) rotate(-60deg); }
+      100% { transform: translate(45px, -35px) scale(0.88) rotate(-120deg); }
+    }
+    @keyframes aurora3 {
+      0% { transform: translate(0, 0) scale(0.95); opacity: 0.55; }
+      50% { transform: translate(-55px, 65px) scale(1.22); opacity: 0.95; }
+      100% { transform: translate(35px, -45px) scale(0.85); opacity: 0.5; }
+    }
+    @keyframes aurora4 {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+      50% { transform: translate(85px, -45px) scale(1.2); opacity: 0.9; }
+      100% { transform: translate(-45px, 55px) scale(0.92); opacity: 0.55; }
     }
 
     /* Custom Scrollbars */
@@ -975,23 +1056,18 @@
 </head>
 <body>
 
-  <!-- Ambient Glows -->
-  <div class="ambient-glow-left"></div>
-  <div class="ambient-glow-right"></div>
+  <!-- Interactive Dynamic Knowledge Mesh Canvas -->
+  <canvas id="ambientCanvas" class="ambient-canvas"></canvas>
 
-  <!-- TOP 1-CLICK INSTANT DEMO HEADER -->
-  <div class="demo-bar">
-    <span style="display: flex; align-items: center; gap: 0.45rem;">
-      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
-      <strong style="color: var(--sand-light);">Backend Live (HTTP 200)</strong>
-    </span>
-    <span>&bull;</span>
-    <span>⚡ <strong>1-Click Instant Demo Profiles:</strong></span>
-    <button class="demo-btn" type="button" onclick="selectDemoRole('admin')">👑 Administrator</button>
-    <button class="demo-btn" type="button" onclick="selectDemoRole('librarian')">📖 Librarian</button>
-    <button class="demo-btn" type="button" onclick="selectDemoRole('member')">👤 Patron Member</button>
-    <span style="margin-left: auto; opacity: 0.85; font-size: 0.7rem;">API Master Key: <code style="font-family: var(--font-mono); color: var(--purple-electric);">lms_master_key_...</code></span>
-  </div>
+  <!-- Multi-Layer Animated Aurora Orbs -->
+  <div class="aurora-orb aurora-orb-1"></div>
+  <div class="aurora-orb aurora-orb-2"></div>
+  <div class="aurora-orb aurora-orb-3"></div>
+  <div class="aurora-orb aurora-orb-4"></div>
+
+  <!-- Ambient Cyber Scanline Grid Overlay -->
+  <div class="ambient-grid-overlay"></div>
+  <div class="ambient-scanline"></div>
 
   <!-- MAIN NAVIGATION HEADER -->
   <header class="site-header">
@@ -1055,27 +1131,6 @@
           <p class="auth-card-subtitle">Access your university academic borrowing account</p>
         </div>
 
-        <!-- 3 Giant Fast 1-Click Role Login Buttons -->
-        <div class="fast-login-box">
-          <div class="fast-login-lbl">
-            <span>⚡ 1-Click Fast Instant Sign In:</span>
-          </div>
-          <div class="fast-roles-grid">
-            <button type="button" onclick="selectDemoRole('admin')" class="fast-role-btn">
-              <span style="font-size: 1.15rem;">👑</span>
-              <span>Admin</span>
-            </button>
-            <button type="button" onclick="selectDemoRole('librarian')" class="fast-role-btn">
-              <span style="font-size: 1.15rem;">📖</span>
-              <span>Librarian</span>
-            </button>
-            <button type="button" onclick="selectDemoRole('member')" class="fast-role-btn">
-              <span style="font-size: 1.15rem;">👤</span>
-              <span>Member</span>
-            </button>
-          </div>
-        </div>
-
         <!-- Mode Toggle Tabs -->
         <div class="auth-tabs">
           <button type="button" class="auth-tab active" id="tabSignIn" onclick="setPublicAuthMode('login')">Sign In</button>
@@ -1113,8 +1168,9 @@
           </button>
         </form>
 
-        <div style="text-align: center; margin-top: 1rem; font-size: 0.72rem; color: var(--sand-dim);">
-          Cryptographic security: <strong>HS256 JWT</strong> &bull; <strong>10-round salted Bcrypt</strong>
+        <div style="text-align: center; margin-top: 1.25rem; font-size: 0.78rem; color: var(--sand-dim); display: flex; flex-direction: column; gap: 0.35rem;">
+          <div>Default Admin: <code style="color: var(--sand-gold); font-family: var(--font-mono); font-weight: 700;">admin@library.com</code> / <code style="color: var(--sand-gold); font-family: var(--font-mono); font-weight: 700;">Admin@123</code></div>
+          <div style="font-size: 0.7rem; opacity: 0.85;">🔒 Cryptographic Security: <strong>HS256 JWT</strong> &bull; <strong>10-round salted Bcrypt</strong></div>
         </div>
       </div>
     </div>
@@ -1685,7 +1741,7 @@
         `;
 
         authHeaderArea.innerHTML = `
-          <button type="button" onclick="directLogin('admin@library.com', 'Admin@123')" class="btn btn-purple btn-sm">⚡ 1-Click Fast Login</button>
+          <button type="button" onclick="scrollToAuth()" class="btn btn-purple btn-sm">🔐 Sign In</button>
         `;
       }
     }
@@ -2201,6 +2257,111 @@
         notify(err.message, 'error');
       }
     }
+
+    // =========================================================================
+    // DYNAMIC KNOWLEDGE GRAPH PARTICLE SYSTEM (ANIMATED BACKGROUND)
+    // =========================================================================
+    (function initAmbientCanvas() {
+      const canvas = document.getElementById('ambientCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+      const particleColors = [
+        'rgba(82, 183, 136, ',   // Forest accent #52b788
+        'rgba(212, 163, 115, ',  // Sand gold #d4a373
+        'rgba(176, 38, 255, ',   // Electric purple #b026ff
+        'rgba(52, 211, 153, '    // Emerald bright
+      ];
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const particleCount = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 22000), 55);
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.42,
+          vy: (Math.random() - 0.5) * 0.42,
+          radius: Math.random() * 2 + 1,
+          colorBase: particleColors[Math.floor(Math.random() * particleColors.length)],
+          baseAlpha: Math.random() * 0.38 + 0.22,
+          pulse: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.02 + Math.random() * 0.02
+        });
+      }
+
+      let mouse = { x: -1000, y: -1000 };
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+      window.addEventListener('mouseout', () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      });
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.pulse += p.pulseSpeed;
+
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+          if (p.y < -10) p.y = height + 10;
+          if (p.y > height + 10) p.y = -10;
+
+          // Gentle mouse avoidance & aura
+          const dxM = mouse.x - p.x;
+          const dyM = mouse.y - p.y;
+          const distM = Math.sqrt(dxM * dxM + dyM * dyM);
+          if (distM < 120) {
+            p.x -= (dxM / distM) * 0.75;
+            p.y -= (dyM / distM) * 0.75;
+          }
+
+          const currentAlpha = p.baseAlpha + Math.sin(p.pulse) * 0.15;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.colorBase + currentAlpha + ')';
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = p.colorBase + '0.7)';
+          ctx.fill();
+
+          // Connect nearby particles with subtle knowledge lines
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 130) {
+              const lineAlpha = (1 - dist / 130) * 0.16;
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(176, 38, 255, ${lineAlpha})`;
+              ctx.lineWidth = 0.8;
+              ctx.shadowBlur = 0;
+              ctx.stroke();
+            }
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
 
     // Startup
     document.addEventListener('DOMContentLoaded', () => {

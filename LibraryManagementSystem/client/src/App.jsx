@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const API_KEY = 'lms_master_key_live_9948271635882';
 
 export default function App() {
+  const canvasRef = useRef(null);
   const [token, setToken] = useState(() => localStorage.getItem('lms_jwt'));
   const [user, setUser] = useState(() => {
     try {
@@ -139,6 +140,116 @@ export default function App() {
   useEffect(() => {
     if (activeTab === 'staff') loadStaffData();
   }, [activeTab]);
+
+  // Background Knowledge Particle System
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animationFrameId;
+    let width, height;
+    let particles = [];
+    const particleColors = [
+      'rgba(82, 183, 136, ',   // Forest accent
+      'rgba(212, 163, 115, ',  // Sand gold
+      'rgba(176, 38, 255, ',   // Electric purple
+      'rgba(52, 211, 153, '    // Emerald bright
+    ];
+
+    const resize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resize);
+    resize();
+
+    const particleCount = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 22000), 55);
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.42,
+        vy: (Math.random() - 0.5) * 0.42,
+        radius: Math.random() * 2 + 1,
+        colorBase: particleColors[Math.floor(Math.random() * particleColors.length)],
+        baseAlpha: Math.random() * 0.38 + 0.22,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.02 + Math.random() * 0.02
+      });
+    }
+
+    let mouse = { x: -1000, y: -1000 };
+    const onMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    const onMouseOut = () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    };
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseout', onMouseOut);
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.pulse += p.pulseSpeed;
+
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+        if (p.y < -10) p.y = height + 10;
+        if (p.y > height + 10) p.y = -10;
+
+        const dxM = mouse.x - p.x;
+        const dyM = mouse.y - p.y;
+        const distM = Math.sqrt(dxM * dxM + dyM * dyM);
+        if (distM < 120) {
+          p.x -= (dxM / distM) * 0.75;
+          p.y -= (dyM / distM) * 0.75;
+        }
+
+        const currentAlpha = p.baseAlpha + Math.sin(p.pulse) * 0.15;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.colorBase + currentAlpha + ')';
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.colorBase + '0.7)';
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 130) {
+            const lineAlpha = (1 - dist / 130) * 0.16;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(176, 38, 255, ${lineAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.shadowBlur = 0;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+    render();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseout', onMouseOut);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   // Direct login execution
   const directLogin = async (email, password) => {
@@ -315,25 +426,18 @@ export default function App() {
 
   return (
     <div className="app-root">
-      {/* Decorative Ambient Floating Spheres */}
-      <div className="ambient-sphere ambient-sphere-1" />
-      <div className="ambient-sphere ambient-sphere-2" />
+      {/* Interactive Dynamic Knowledge Mesh Canvas */}
+      <canvas ref={canvasRef} className="ambient-canvas" />
 
-      {/* Top 1-Click Fast Credentials Bar */}
-      <div className="demo-bar">
-        <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }} />
-          <strong style={{ color: 'var(--sand-50)' }}>Backend Live (HTTP 200)</strong>
-        </span>
-        <span>&bull;</span>
-        <span>⚡ <strong>1-Click Instant Demo Profiles:</strong></span>
-        <button type="button" className="demo-btn" onClick={() => selectDemoRole('admin')}>👑 Administrator</button>
-        <button type="button" className="demo-btn" onClick={() => selectDemoRole('librarian')}>📖 Librarian</button>
-        <button type="button" className="demo-btn" onClick={() => selectDemoRole('member')}>👤 Patron Member</button>
-        <span style={{ marginLeft: 'auto', opacity: 0.85, fontSize: '0.7rem' }}>
-          API Key: <code style={{ fontFamily: 'var(--font-mono)', color: 'var(--purple-electric)' }}>lms_master_key_...</code>
-        </span>
-      </div>
+      {/* Multi-Layer Animated Aurora Orbs */}
+      <div className="aurora-orb aurora-orb-1" />
+      <div className="aurora-orb aurora-orb-2" />
+      <div className="aurora-orb aurora-orb-3" />
+      <div className="aurora-orb aurora-orb-4" />
+
+      {/* Ambient Cyber Scanline Grid Overlay */}
+      <div className="ambient-grid-overlay" />
+      <div className="ambient-scanline" />
 
       {/* Main Navigation Header */}
       <header className="site-header">
@@ -381,7 +485,7 @@ export default function App() {
                 <button type="button" onClick={handleSignOut} className="btn btn-rose btn-sm" title="Sign Out">🚪 Sign Out</button>
               </div>
             ) : (
-              <button type="button" onClick={() => selectDemoRole('admin')} className="btn btn-purple btn-sm">⚡ 1-Click Fast Login</button>
+              <button type="button" onClick={() => { setGuestTab('login'); const el = document.getElementById('authPortalSection'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} className="btn btn-purple btn-sm">🔐 Sign In</button>
             )}
           </div>
         </div>
@@ -414,18 +518,6 @@ export default function App() {
               <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', marginTop: '0.25rem' }}>
                 Enter patron credentials to enter the library workspace
               </p>
-            </div>
-
-            {/* 1-Click Fast Profile Buttons inside Card */}
-            <div style={{ background: 'var(--forest-950)', border: '1px solid var(--sand-border)', borderRadius: '0.75rem', padding: '0.75rem', marginBottom: '1.25rem' }}>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--purple-electric)', marginBottom: '0.5rem' }}>
-                ⚡ 1-Click Fast Access:
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.4rem' }}>
-                <button type="button" onClick={() => selectDemoRole('admin')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>👑 Admin</button>
-                <button type="button" onClick={() => selectDemoRole('librarian')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>📖 Librarian</button>
-                <button type="button" onClick={() => selectDemoRole('member')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>👤 Member</button>
-              </div>
             </div>
 
             {/* Mode Switcher Tabs */}
@@ -468,8 +560,9 @@ export default function App() {
               </button>
             </form>
 
-            <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.75rem', color: 'var(--sand-400)' }}>
-              Cryptographic protection: <strong>HS256 JWT</strong> &bull; <strong>Bcrypt 10 rounds</strong>
+            <div style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.78rem', color: 'var(--sand-400)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <div>Default Admin: <code style={{ color: 'var(--sand-gold)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>admin@library.com</code> / <code style={{ color: 'var(--sand-gold)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>Admin@123</code></div>
+              <div style={{ fontSize: '0.7rem', opacity: 0.85 }}>🔒 Cryptographic Security: <strong>HS256 JWT</strong> &bull; <strong>10-round salted Bcrypt</strong></div>
             </div>
           </div>
 
