@@ -518,54 +518,13 @@ export default function App() {
       {!user && (
         <main className="page-container">
           {guestTab === 'login' && (
-            <>
-              <div className="public-hero">
-                <div className="public-badge">
-                  <span>🏛️ Academic Cloud Library & Cataloging Platform</span>
-                </div>
-                <h1 className="public-title">
-                  Catalog, Circulate & Discover <span>Knowledge in the Cloud</span>
-                </h1>
-                <p className="public-subtitle">
-                  A sanctuary for research, technology, and literature. Manage campus circulation, reserve academic publications, and access your digital patron profile with zero friction.
-                </p>
-              </div>
-
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: 'calc(100vh - 160px)' }}>
               {/* Centered Libib-Style Authentication Container (https://www.libib.com/login) */}
-              <div className="libib-auth-container" id="authPortalSection">
+              <div className="libib-auth-container" id="authPortalSection" style={{ margin: '2rem auto' }}>
                 <div className="libib-auth-card">
                   <h2 className="libib-auth-title">
                     {authMode === 'login' ? 'Manager Login' : 'Create Account'}
                   </h2>
-
-                  {/* 1-Click Fast Instant Demo Access */}
-                  {authMode === 'login' && (
-                    <>
-                      <div className="fast-login-box">
-                        <div className="fast-login-lbl">⚡ 1-Click Fast Instant Demo Access</div>
-                        <div className="fast-roles-grid">
-                          <button type="button" onClick={() => selectDemoRole('admin')} className="fast-role-btn" title="Sign in as Administrator">
-                            <span style={{ fontSize: '1.15rem' }}>👑</span>
-                            <span>Admin</span>
-                          </button>
-                          <button type="button" onClick={() => selectDemoRole('librarian')} className="fast-role-btn" title="Sign in as Librarian">
-                            <span style={{ fontSize: '1.15rem' }}>📖</span>
-                            <span>Librarian</span>
-                          </button>
-                          <button type="button" onClick={() => selectDemoRole('member')} className="fast-role-btn" title="Sign in as Patron Member">
-                            <span style={{ fontSize: '1.15rem' }}>👤</span>
-                            <span>Member</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '1.25rem 0' }}>
-                        <div style={{ flex: 1, height: 1, background: 'var(--sand-border)' }}></div>
-                        <span style={{ fontSize: '0.72rem', color: 'var(--sand-300)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>or sign in with email</span>
-                        <div style={{ flex: 1, height: 1, background: 'var(--sand-border)' }}></div>
-                      </div>
-                    </>
-                  )}
 
                   <form onSubmit={handleAuthSubmit}>
                     {authMode === 'register' && (
@@ -583,12 +542,11 @@ export default function App() {
                     )}
 
                     <div className="form-group">
-                      <label className="form-label">Email Address</label>
+                      <label className="form-label">Email</label>
                       <input
                         type="email"
                         value={authEmail}
                         onChange={e => setAuthEmail(e.target.value)}
-                        required
                         className="form-input"
                         placeholder="admin@library.com"
                       />
@@ -598,7 +556,7 @@ export default function App() {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                         <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
                         {authMode === 'login' && (
-                          <span onClick={() => notify('Default passwords: Admin@123 / Librarian@123 / Member@123', 'info')} className="libib-forgot-link">Forgot password?</span>
+                          <span onClick={() => notify('Demo passwords: Admin@123 / Librarian@123 / Member@123', 'info')} className="libib-forgot-link">Forgot password?</span>
                         )}
                       </div>
                       <div className="password-input-wrap">
@@ -606,9 +564,8 @@ export default function App() {
                           type={showPassword ? 'text' : 'password'}
                           value={authPassword}
                           onChange={e => setAuthPassword(e.target.value)}
-                          required
                           className="form-input"
-                          placeholder="•••••••• (e.g. Admin@123)"
+                          placeholder="Admin@123"
                         />
                         <button
                           type="button"
@@ -619,17 +576,6 @@ export default function App() {
                           <span className="pass-eye-icon">{showPassword ? '🙈' : '👁️'}</span>
                           <span className="pass-toggle-text">{showPassword ? 'Hide' : 'Show'}</span>
                         </button>
-                      </div>
-                      <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--sand-300)', cursor: 'pointer', userSelect: 'none' }}>
-                          <input
-                            type="checkbox"
-                            checked={showPassword}
-                            onChange={e => setShowPassword(e.target.checked)}
-                            style={{ cursor: 'pointer', accentColor: 'var(--purple-electric)', width: 14, height: 14 }}
-                          />
-                          <span>Show password</span>
-                        </label>
                       </div>
                     </div>
 
@@ -662,39 +608,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-
-              {/* LIBIB-STYLE FEATURE SHOWCASE */}
-              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--sand-50)' }}>Built for Academic Collections & Students</h2>
-                <p style={{ fontSize: '0.9rem', color: 'var(--sand-300)', marginTop: '0.3rem' }}>Intuitive cataloging, barcode/ISBN search, and smart circulation.</p>
-              </div>
-
-              <div className="feature-grid">
-                <div className="feature-card">
-                  <div className="feature-icon">🔍</div>
-                  <h3 className="feature-title">Fast Cataloging & Real-Time Stock</h3>
-                  <p className="feature-text">Search by Title, Author, or ISBN with immediate availability indicators, category filtering, and shelf location codes.</p>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-icon">🔄</div>
-                  <h3 className="feature-title">Smart 14-Day Circulation</h3>
-                  <p className="feature-text">Automatic 14-day checkout windows, fine calculations ($0.50/day policy), and 1-click inventory replenishment on return.</p>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-icon">🪪</div>
-                  <h3 className="feature-title">Holographic Patron Cards</h3>
-                  <p className="feature-text">Digital membership cards for university patrons featuring verified identification, member tiers, and password management.</p>
-                </div>
-
-                <div className="feature-card">
-                  <div className="feature-icon">🛡️</div>
-                  <h3 className="feature-title">Enterprise Security & RBAC</h3>
-                  <p className="feature-text">3-Tier role authorization (Admin, Librarian, Member) with dual TLS 1.3 ports (8000 & 8443) and API Key verification.</p>
-                </div>
-              </div>
-            </>
+            </div>
           )}
 
           {guestTab === 'catalog' && (
