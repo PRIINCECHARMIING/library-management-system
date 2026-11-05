@@ -1261,6 +1261,31 @@
       <div class="libib-auth-card">
         <h2 class="libib-auth-title" id="authCardTitle">Manager Login</h2>
 
+        <!-- 1-Click Fast Instant Demo Access -->
+        <div class="fast-login-box" id="demoAccessBox">
+          <div class="fast-login-lbl">⚡ 1-Click Fast Instant Demo Access</div>
+          <div class="fast-roles-grid">
+            <button type="button" onclick="selectDemoRole('admin')" class="fast-role-btn" title="Sign in as Administrator">
+              <span style="font-size: 1.15rem;">👑</span>
+              <span>Admin</span>
+            </button>
+            <button type="button" onclick="selectDemoRole('librarian')" class="fast-role-btn" title="Sign in as Librarian">
+              <span style="font-size: 1.15rem;">📖</span>
+              <span>Librarian</span>
+            </button>
+            <button type="button" onclick="selectDemoRole('member')" class="fast-role-btn" title="Sign in as Patron Member">
+              <span style="font-size: 1.15rem;">👤</span>
+              <span>Member</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin: 1.25rem 0;" id="authDivider">
+          <div style="flex: 1; height: 1px; background: var(--sand-border-soft);"></div>
+          <span style="font-size: 0.72rem; color: var(--sand-dim); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">or sign in with email</span>
+          <div style="flex: 1; height: 1px; background: var(--sand-border-soft);"></div>
+        </div>
+
         <!-- Auth Form -->
         <form id="publicAuthForm" onsubmit="handleAuthFormSubmit(event)">
           <div class="form-group hidden" id="groupName">
@@ -1269,17 +1294,17 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="email" id="inputEmail" required class="form-input" placeholder="Enter your email">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="inputEmail" required class="form-input" placeholder="admin@library.com">
           </div>
 
           <div class="form-group">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;" id="forgotLinkWrap">
               <label class="form-label" style="margin-bottom: 0;">Password</label>
-              <a href="javascript:void(0)" onclick="notify('Contact system administrator to reset credentials.', 'info')" class="libib-forgot-link">Forgot password?</a>
+              <a href="javascript:void(0)" onclick="notify('Default passwords: Admin@123 / Librarian@123 / Member@123', 'info')" class="libib-forgot-link">Forgot password?</a>
             </div>
             <div class="password-input-wrap">
-              <input type="password" id="inputPassword" required class="form-input" placeholder="Enter your password">
+              <input type="password" id="inputPassword" required class="form-input" placeholder="•••••••• (e.g. Admin@123)">
               <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('inputPassword', this)" title="Show / Hide Password">
                 <span class="pass-eye-icon">👁️</span>
                 <span class="pass-toggle-text">Show</span>
@@ -1805,6 +1830,14 @@
       });
       const json = await res.json();
       if (!res.ok) {
+        if (res.status === 401 && jwtToken) {
+          jwtToken = null;
+          currentUser = null;
+          localStorage.removeItem('lms_jwt');
+          localStorage.removeItem('lms_user');
+          renderViewState();
+          notify('Session expired. Please sign in again.', 'info');
+        }
         throw new Error(json.error?.message || json.message || 'API request error');
       }
       return json;
@@ -1827,6 +1860,7 @@
         notify(`Welcome back, ${currentUser.name}! Entering library workspace...`, 'success');
         renderViewState();
         loadAllData();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (err) {
         notify(err.message, 'error');
       }
@@ -1910,6 +1944,7 @@
         viewApp.classList.remove('hidden');
         switchAppTab(tab);
         updateGuestNav(tab);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         const viewPublic = document.getElementById('view-public');
         const viewApp = document.getElementById('view-app');
@@ -1922,8 +1957,10 @@
 
     function updateGuestNav(activeTab) {
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      const activeBtn = document.getElementById(`guest-nav-${activeTab}`);
-      if (activeBtn) activeBtn.classList.add('active');
+      const guestBtn = document.getElementById(`guest-nav-${activeTab}`);
+      if (guestBtn) guestBtn.classList.add('active');
+      const appBtn = document.getElementById(`app-nav-${activeTab}`);
+      if (appBtn) appBtn.classList.add('active');
     }
 
     function handleLogoClick() {
@@ -1961,6 +1998,7 @@
       if (tab === 'profile') renderProfileData();
       if (tab === 'staff') loadStaffStudio();
       if (tab === 'catalog') applyCatalogFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function setPublicAuthMode(mode) {
@@ -1971,10 +2009,14 @@
       const btnAuthSubmit = document.getElementById('btnAuthSubmit');
       const forgotLink = document.getElementById('forgotLinkWrap');
       const switchPrompt = document.getElementById('switchPrompt');
+      const demoBox = document.getElementById('demoAccessBox');
+      const authDivider = document.getElementById('authDivider');
 
       if (groupName) groupName.classList.toggle('hidden', mode === 'login');
       if (groupRole) groupRole.classList.toggle('hidden', mode === 'login');
       if (forgotLink) forgotLink.classList.toggle('hidden', mode !== 'login');
+      if (demoBox) demoBox.classList.toggle('hidden', mode !== 'login');
+      if (authDivider) authDivider.classList.toggle('hidden', mode !== 'login');
       if (authCardTitle) authCardTitle.textContent = mode === 'login' ? 'Manager Login' : 'Create Account';
       if (btnAuthSubmit) btnAuthSubmit.textContent = mode === 'login' ? 'Log In' : 'Sign Up';
       if (switchPrompt) {
@@ -2016,6 +2058,10 @@
       let password = document.getElementById('inputPassword')?.value;
 
       if (publicAuthMode === 'login') {
+        if (!email && !password) {
+          notify('Auto-signing in as Administrator demo profile...', 'info');
+          return directLogin('admin@library.com', 'Admin@123');
+        }
         if (!email) return notify('Please enter your email address.', 'error');
         if (!password) return notify('Please enter your password.', 'error');
         await directLogin(email, password);

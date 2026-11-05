@@ -78,6 +78,14 @@ export default function App() {
     });
     const data = await res.json();
     if (!res.ok) {
+      if (res.status === 401 && token) {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem('lms_token');
+        localStorage.removeItem('lms_user');
+        setGuestTab('login');
+        notify('Session expired. Please sign in again.', 'info');
+      }
       throw new Error(data.error?.message || data.message || 'Action failed');
     }
     return data;
@@ -257,13 +265,15 @@ export default function App() {
     setAuthEmail(email);
     setAuthPassword(password);
     try {
-      notify(`Authenticating ${email}...`, 'info');
+      notify(`Authenticating as ${email}...`, 'info');
       const res = await api('/api/v1/auth/login', 'POST', { email, password });
       setToken(res.data.token);
       setUser(res.data.user);
-      localStorage.setItem('lms_jwt', res.data.token);
+      localStorage.setItem('lms_token', res.data.token);
       localStorage.setItem('lms_user', JSON.stringify(res.data.user));
       notify(`Welcome back, ${res.data.user.name}! Entering library workspace...`, 'success');
+      setActiveTab('catalog');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       loadData();
     } catch (err) {
       notify(err.message, 'error');
@@ -285,6 +295,10 @@ export default function App() {
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     if (authMode === 'login') {
+      if (!authEmail.trim() && !authPassword) {
+        notify('Auto-signing in as Administrator demo profile...', 'info');
+        return directLogin('admin@library.com', 'Admin@123');
+      }
       if (!authEmail.trim()) {
         notify('Please enter your email address.', 'error');
         return;
@@ -459,28 +473,28 @@ export default function App() {
 
           {user ? (
             <nav className="nav-links">
-              <button type="button" onClick={() => setActiveTab('catalog')} className={`nav-btn ${activeTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
-              <button type="button" onClick={() => setActiveTab('loans')} className={`nav-btn ${activeTab === 'loans' ? 'active' : ''}`}>📋 My Loans</button>
-              <button type="button" onClick={() => setActiveTab('about')} className={`nav-btn ${activeTab === 'about' ? 'active' : ''}`}>🏛️ About</button>
-              <button type="button" onClick={() => setActiveTab('profile')} className={`nav-btn ${activeTab === 'profile' ? 'active' : ''}`}>🪪 Patron Card</button>
+              <button type="button" onClick={() => { setActiveTab('catalog'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${activeTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
+              <button type="button" onClick={() => { setActiveTab('loans'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${activeTab === 'loans' ? 'active' : ''}`}>📋 My Loans</button>
+              <button type="button" onClick={() => { setActiveTab('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${activeTab === 'about' ? 'active' : ''}`}>🏛️ About</button>
+              <button type="button" onClick={() => { setActiveTab('profile'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${activeTab === 'profile' ? 'active' : ''}`}>🪪 Patron Card</button>
               {isStaff && (
-                <button type="button" onClick={() => setActiveTab('staff')} className={`nav-btn ${activeTab === 'staff' ? 'active' : ''}`}>⚙️ Staff Studio</button>
+                <button type="button" onClick={() => { setActiveTab('staff'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${activeTab === 'staff' ? 'active' : ''}`}>⚙️ Staff Studio</button>
               )}
-              <button type="button" onClick={() => setActiveTab('security')} className={`nav-btn ${activeTab === 'security' ? 'active' : ''}`}>🔒 Security</button>
+              <button type="button" onClick={() => { setActiveTab('security'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${activeTab === 'security' ? 'active' : ''}`}>🔒 Security</button>
             </nav>
           ) : (
             <nav className="nav-links">
-              <button type="button" onClick={() => setGuestTab('login')} className={`nav-btn ${guestTab === 'login' ? 'active' : ''}`}>🔑 Sign In</button>
-              <button type="button" onClick={() => setGuestTab('catalog')} className={`nav-btn ${guestTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
-              <button type="button" onClick={() => setGuestTab('about')} className={`nav-btn ${guestTab === 'about' ? 'active' : ''}`}>🏛️ Campus & About</button>
-              <button type="button" onClick={() => setGuestTab('security')} className={`nav-btn ${guestTab === 'security' ? 'active' : ''}`}>🔒 Security Specs</button>
+              <button type="button" onClick={() => { setGuestTab('login'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${guestTab === 'login' ? 'active' : ''}`}>🔑 Sign In</button>
+              <button type="button" onClick={() => { setGuestTab('catalog'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${guestTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
+              <button type="button" onClick={() => { setGuestTab('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${guestTab === 'about' ? 'active' : ''}`}>🏛️ Campus & About</button>
+              <button type="button" onClick={() => { setGuestTab('security'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`nav-btn ${guestTab === 'security' ? 'active' : ''}`}>🔒 Security Specs</button>
             </nav>
           )}
 
           <div>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <div onClick={() => setActiveTab('profile')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--forest-800)', border: '1px solid var(--sand-border)', borderRadius: '9999px', padding: '0.25rem 0.75rem', cursor: 'pointer' }}>
+                <div onClick={() => { setActiveTab('profile'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'var(--forest-800)', border: '1px solid var(--sand-border)', borderRadius: '9999px', padding: '0.25rem 0.75rem', cursor: 'pointer' }}>
                   <div style={{ width: 24, height: 24, borderRadius: '9999px', background: 'var(--purple-electric)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 800, color: '#ffffff' }}>
                     {userInitials}
                   </div>
@@ -524,6 +538,35 @@ export default function App() {
                     {authMode === 'login' ? 'Manager Login' : 'Create Account'}
                   </h2>
 
+                  {/* 1-Click Fast Instant Demo Access */}
+                  {authMode === 'login' && (
+                    <>
+                      <div className="fast-login-box">
+                        <div className="fast-login-lbl">⚡ 1-Click Fast Instant Demo Access</div>
+                        <div className="fast-roles-grid">
+                          <button type="button" onClick={() => selectDemoRole('admin')} className="fast-role-btn" title="Sign in as Administrator">
+                            <span style={{ fontSize: '1.15rem' }}>👑</span>
+                            <span>Admin</span>
+                          </button>
+                          <button type="button" onClick={() => selectDemoRole('librarian')} className="fast-role-btn" title="Sign in as Librarian">
+                            <span style={{ fontSize: '1.15rem' }}>📖</span>
+                            <span>Librarian</span>
+                          </button>
+                          <button type="button" onClick={() => selectDemoRole('member')} className="fast-role-btn" title="Sign in as Patron Member">
+                            <span style={{ fontSize: '1.15rem' }}>👤</span>
+                            <span>Member</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '1.25rem 0' }}>
+                        <div style={{ flex: 1, height: 1, background: 'var(--sand-border)' }}></div>
+                        <span style={{ fontSize: '0.72rem', color: 'var(--sand-300)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>or sign in with email</span>
+                        <div style={{ flex: 1, height: 1, background: 'var(--sand-border)' }}></div>
+                      </div>
+                    </>
+                  )}
+
                   <form onSubmit={handleAuthSubmit}>
                     {authMode === 'register' && (
                       <div className="form-group">
@@ -540,14 +583,14 @@ export default function App() {
                     )}
 
                     <div className="form-group">
-                      <label className="form-label">Email</label>
+                      <label className="form-label">Email Address</label>
                       <input
                         type="email"
                         value={authEmail}
                         onChange={e => setAuthEmail(e.target.value)}
                         required
                         className="form-input"
-                        placeholder="Enter your email"
+                        placeholder="admin@library.com"
                       />
                     </div>
 
@@ -555,7 +598,7 @@ export default function App() {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                         <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
                         {authMode === 'login' && (
-                          <span onClick={() => notify('Contact system administrator (admin@library.com) to reset credentials.', 'info')} className="libib-forgot-link">Forgot password?</span>
+                          <span onClick={() => notify('Default passwords: Admin@123 / Librarian@123 / Member@123', 'info')} className="libib-forgot-link">Forgot password?</span>
                         )}
                       </div>
                       <div className="password-input-wrap">
@@ -565,7 +608,7 @@ export default function App() {
                           onChange={e => setAuthPassword(e.target.value)}
                           required
                           className="form-input"
-                          placeholder="Enter your password"
+                          placeholder="•••••••• (e.g. Admin@123)"
                         />
                         <button
                           type="button"
