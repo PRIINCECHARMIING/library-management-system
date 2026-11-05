@@ -1,0 +1,14 @@
+{
+  "name": "library-management-system",
+  "version": "1.0.0",
+  "description": "Enterprise Library Management System - REST API & Client",
+  "scripts": {
+    "start": "npm run start --prefix server",
+    "dev": "npm run dev --prefix server",
+    "server": "npm run start --prefix server",
+    "server:dev": "npm run dev --prefix server",
+    "server:test": "npm test --prefix server",
+    "client": "npm run dev --prefix client",
+    "test": "npm test --prefix server"
+  }
+}

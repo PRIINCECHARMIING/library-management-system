@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Athena LibraryOS — Forest Green & Electric Purple Cloud Library</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600;1,700&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    /* ==========================================================================
+       VIVID COLOR PALETTE: FOREST GREEN, SAND BEIGE & ELECTRIC PURPLE
+       HIGH-FIDELITY GLASSMORPHISM & KEYFRAME ANIMATIONS
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-serif: 'Playfair Display', Georgia, Cambria, serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+      /* Forest Green Palette (Primary Academic Canvas & Surfaces) */
+      --forest-bg: #05130b;
+      --forest-canvas: #091f13;
+      --forest-surface: #0e2a1a;
+      --forest-card: #143823;
+      --forest-card-hover: #1c4d31;
+      --forest-primary: #2d6a4f;
+      --forest-light: #52b788;
+      --forest-accent: #74c69d;
+
+      /* Sand Beige Palette (Warm Parchment, Borders, Academic Accents) */
+      --sand-light: #fdfbf7;
+      --sand-text: #f7f1e5;
+      --sand-muted: #e2d2be;
+      --sand-dim: #c5b098;
+      --sand-border: #d4a373;
+      --sand-border-soft: rgba(212, 163, 115, 0.35);
+      --sand-gold: #ddb892;
+
+      /* Electric Purple Accents (High-Voltage Neon, Glowing Buttons, Highlights) */
+      --purple-electric: #b026ff;
+      --purple-primary: #a855f7;
+      --purple-hover: #9333ea;
+      --purple-light: #c084fc;
+      --purple-glow: rgba(176, 38, 255, 0.55);
+      --purple-bg: rgba(176, 38, 255, 0.18);
+
+      /* Semantic Highlights */
+      --emerald: #10b981;
+      --emerald-bg: rgba(16, 185, 129, 0.2);
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --rose-bg: rgba(244, 63, 94, 0.2);
+
+      --transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--forest-bg);
+      color: var(--sand-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      overflow-x: hidden;
+      position: relative;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(45, 106, 79, 0.35) 0px, transparent 55%),
+        radial-gradient(at 100% 100%, rgba(176, 38, 255, 0.22) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(18, 43, 28, 0.5) 0px, transparent 100%);
+      background-attachment: fixed;
+    }
+
+    /* Ambient Decorative Glows */
+    .ambient-glow-left {
+      position: fixed;
+      top: -160px;
+      left: -160px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(82, 183, 136, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatOrb 18s ease-in-out infinite alternate;
+    }
+    .ambient-glow-right {
+      position: fixed;
+      bottom: -160px;
+      right: -160px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: floatOrb 22s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(40px, 30px) scale(1.08); }
+      100% { transform: translate(-20px, 50px) scale(0.95); }
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--forest-bg); }
+    ::-webkit-scrollbar-thumb { background: var(--forest-primary); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--sand-border); }
+
+    /* ==========================================================================
+       BUTTONS & INPUTS
+       ========================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 0.7rem 1.35rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-purple {
+      background: linear-gradient(135deg, var(--purple-electric), var(--purple-hover));
+      color: #ffffff;
+      box-shadow: 0 4px 15px var(--purple-glow);
+    }
+    .btn-purple:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(176, 38, 255, 0.6);
+    }
+    .btn-sand {
+      background: rgba(212, 163, 115, 0.15);
+      color: var(--sand-text);
+      border: 1px solid var(--sand-border);
+    }
+    .btn-sand:hover {
+      background: rgba(212, 163, 115, 0.28);
+      color: #ffffff;
+      border-color: var(--sand-gold);
+    }
+    .btn-forest {
+      background: linear-gradient(135deg, var(--forest-primary), #1e4d38);
+      color: var(--sand-light);
+      border: 1px solid var(--forest-light);
+      box-shadow: 0 4px 14px rgba(45, 106, 79, 0.4);
+    }
+    .btn-forest:hover {
+      background: linear-gradient(135deg, var(--forest-light), var(--forest-primary));
+      transform: translateY(-1px);
+    }
+    .btn-rose {
+      background: var(--rose-bg);
+      color: var(--rose);
+      border: 1px solid rgba(244, 63, 94, 0.35);
+    }
+    .btn-rose:hover { background: rgba(244, 63, 94, 0.3); }
+    .btn-sm {
+      padding: 0.45rem 0.9rem;
+      font-size: 0.78rem;
+      border-radius: 0.5rem;
+    }
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Fast Demo Header Bar */
+    .demo-bar {
+      background: #030a05;
+      border-bottom: 1px solid var(--sand-border-soft);
+      padding: 0.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      font-size: 0.75rem;
+      color: var(--sand-muted);
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 60;
+    }
+    .demo-btn {
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border-soft);
+      color: var(--sand-light);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .demo-btn:hover {
+      background: var(--purple-electric);
+      color: #ffffff;
+      border-color: var(--purple-electric);
+      box-shadow: 0 0 14px var(--purple-glow);
+    }
+
+    /* Top Navigation Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(12, 32, 20, 0.95);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--sand-border-soft);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 4.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-icon {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, var(--forest-primary) 0%, var(--purple-electric) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 16px var(--purple-glow);
+      transition: transform 0.2s ease;
+    }
+    .brand-logo:hover .brand-icon { transform: scale(1.06); }
+    .brand-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      color: var(--sand-light);
+    }
+    .brand-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      background: var(--purple-bg);
+      color: var(--purple-electric);
+      border: 1px solid rgba(176, 38, 255, 0.35);
+      margin-left: 0.4rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--sand-muted);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.5rem 0.95rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
+    }
+    .nav-btn:hover {
+      color: var(--sand-light);
+      background: var(--forest-card);
+    }
+    .nav-btn.active {
+      color: #ffffff;
+      background: var(--purple-electric);
+      box-shadow: 0 0 14px var(--purple-glow);
+    }
+
+    .page-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+      flex: 1;
+    }
+
+    /* ==========================================================================
+       VIEW 1: PUBLIC HOMEPAGE & DEDICATED LOGIN PORTAL (WHEN NOT LOGGED IN)
+       ========================================================================== */
+    .public-portal-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      margin: 1.5rem 0 3.5rem;
+    }
+
+    .public-hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .campus-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--purple-bg);
+      border: 1px solid rgba(176, 38, 255, 0.4);
+      padding: 0.35rem 0.95rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--sand-light);
+      width: fit-content;
+    }
+    .hero-heading {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      color: var(--sand-light);
+    }
+    .hero-heading span {
+      background: linear-gradient(135deg, var(--sand-gold) 0%, var(--purple-electric) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtext {
+      font-size: 1.1rem;
+      color: var(--sand-muted);
+      line-height: 1.6;
+    }
+
+    /* Prominent Login Card */
+    .auth-card {
+      background: var(--forest-surface);
+      border: 2px solid var(--sand-border);
+      border-radius: 1.75rem;
+      padding: 2.5rem;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px -5px var(--purple-glow);
+    }
+    .auth-card-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .auth-card-icon {
+      width: 3.75rem;
+      height: 3.75rem;
+      border-radius: 1.1rem;
+      background: linear-gradient(135deg, var(--forest-primary) 0%, var(--purple-electric) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      margin: 0 auto 0.85rem;
+      box-shadow: 0 6px 20px var(--purple-glow);
+    }
+    .auth-card-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--sand-light);
+    }
+    .auth-card-subtitle {
+      font-size: 0.85rem;
+      color: var(--sand-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Giant 1-Click Fast Login Buttons */
+    .fast-login-box {
+      background: var(--forest-bg);
+      border: 1px solid var(--sand-border-soft);
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .fast-login-lbl {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--purple-electric);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .fast-roles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .fast-role-btn {
+      background: var(--forest-card);
+      border: 1px solid var(--sand-border-soft);
+      color: var(--sand-light);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.6rem 0.5rem;
+      border-radius: 0.65rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      text-align: center;
+    }
+    .fast-role-btn:hover {
+      background: var(--purple-electric);
+      color: #ffffff;
+      border-color: var(--purple-electric);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px var(--purple-glow);
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--forest-bg);
+      border-radius: 0.75rem;
+      padding: 0.3rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--sand-border-soft);
+    }
+    .auth-tab {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--sand-dim);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.6rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .auth-tab.active {
+      background: var(--purple-electric);
+      color: #ffffff;
+      box-shadow: 0 2px 10px var(--purple-glow);
+    }
+
+    .form-group {
+      margin-bottom: 1.15rem;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--sand-text);
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      background: var(--forest-bg);
+      border: 1px solid var(--sand-border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: var(--sand-light);
+      font-family: inherit;
+      font-size: 0.875rem;
+      transition: var(--transition);
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--purple-electric);
+      box-shadow: 0 0 0 3px var(--purple-glow);
+    }
+    .form-select {
+      width: 100%;
+      background: var(--forest-bg);
+      border: 1px solid var(--sand-border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: var(--sand-light);
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+
+    /* Public Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .feature-card {
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border-soft);
+      border-radius: 1.25rem;
+      padding: 1.75rem;
+      transition: var(--transition);
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sand-border);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6), 0 0 18px -4px var(--purple-glow);
+    }
+    .feature-icon {
+      font-size: 2.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .feature-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--sand-light);
+      margin-bottom: 0.4rem;
+    }
+    .feature-text {
+      font-size: 0.85rem;
+      color: var(--sand-muted);
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       VIEW 2: INTERNAL DIGITAL LIBRARY APP (WHEN LOGGED IN)
+       ========================================================================== */
+    .app-ribbon {
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border);
+      border-radius: 1.25rem;
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .ribbon-stats {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .ribbon-stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .ribbon-stat-val {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--sand-light);
+      line-height: 1.1;
+    }
+    .ribbon-stat-lbl {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--sand-dim);
+      margin-top: 0.2rem;
+    }
+
+    /* Catalog Shelf */
+    .catalog-controls {
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border-soft);
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .search-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--sand-dim);
+    }
+    .catalog-search-input {
+      width: 100%;
+      background: var(--forest-bg);
+      border: 1px solid var(--sand-border);
+      border-radius: 0.75rem;
+      padding: 0.7rem 1rem 0.7rem 2.5rem;
+      color: var(--sand-light);
+      font-family: inherit;
+      font-size: 0.875rem;
+    }
+    .catalog-search-input:focus {
+      outline: none;
+      border-color: var(--purple-electric);
+      box-shadow: 0 0 0 3px var(--purple-glow);
+    }
+
+    .genre-chips {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .chip {
+      background: var(--forest-bg);
+      border: 1px solid var(--sand-border-soft);
+      color: var(--sand-muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+    .chip:hover {
+      color: var(--sand-light);
+      background: var(--forest-card);
+    }
+    .chip.active {
+      background: var(--purple-electric);
+      color: #ffffff;
+      border-color: var(--purple-electric);
+      box-shadow: 0 0 12px var(--purple-glow);
+    }
+
+    /* Books Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .book-card {
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border-soft);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+    }
+    .book-card:hover {
+      border-color: var(--purple-electric);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 35px -10px rgba(0, 0, 0, 0.7), 0 0 20px -4px var(--purple-glow);
+    }
+
+    .book-tile-cover {
+      height: 135px;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, #091e12 0%, var(--forest-primary) 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.15rem 1.35rem;
+      margin-bottom: 1.15rem;
+      border-left: 7px solid var(--purple-electric);
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), 0 8px 18px -4px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+    }
+    .book-tile-cover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 1.25rem;
+      width: 14px;
+      height: 36px;
+      background: var(--sand-gold);
+      border-bottom: 6px solid transparent;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+    .book-tile-title {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--sand-light);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.35;
+    }
+    .book-tile-author {
+      font-size: 0.78rem;
+      color: var(--sand-gold);
+      font-weight: 600;
+      margin-top: 0.35rem;
+    }
+    .book-tile-icon {
+      font-size: 2.25rem;
+      opacity: 0.9;
+    }
+
+    .book-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+    .book-cat-badge {
+      background: var(--purple-bg);
+      color: var(--sand-light);
+      border: 1px solid rgba(176, 38, 255, 0.35);
+      padding: 0.2rem 0.6rem;
+      border-radius: 0.4rem;
+      font-weight: 700;
+      font-size: 0.7rem;
+    }
+    .stock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .stock-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 9999px;
+    }
+    .stock-available { color: var(--forest-accent); }
+    .stock-available .stock-dot { background: var(--forest-accent); box-shadow: 0 0 8px var(--forest-accent); }
+    .stock-out { color: var(--rose); }
+    .stock-out .stock-dot { background: var(--rose); }
+
+    .book-desc {
+      font-size: 0.82rem;
+      color: var(--sand-muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .book-specs {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--sand-dim);
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--sand-border-soft);
+      margin-bottom: 1rem;
+    }
+    .book-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border-soft);
+      border-radius: 1rem;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .data-table th {
+      background: var(--forest-bg);
+      padding: 0.85rem 1.25rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--sand-dim);
+      border-bottom: 1px solid var(--sand-border-soft);
+    }
+    .data-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--sand-border-soft);
+      color: var(--sand-text);
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--forest-card); }
+
+    /* Holographic Patron Card in Forest Green & Sand Beige with Electric Purple Sheen */
+    .holo-card {
+      background: linear-gradient(135deg, var(--forest-primary) 0%, #153c29 50%, #5b1b8b 100%);
+      border: 2px solid var(--sand-border);
+      border-radius: 1.5rem;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      min-height: 290px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 35px -5px var(--purple-glow);
+    }
+    .holo-card::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: linear-gradient(60deg, transparent 35%, rgba(253, 251, 247, 0.12) 45%, rgba(176, 38, 255, 0.3) 50%, transparent 65%);
+      transform: rotate(25deg);
+      animation: holoSheen 8s infinite linear;
+      pointer-events: none;
+    }
+    @keyframes holoSheen {
+      0% { transform: translateY(-30%) rotate(25deg); }
+      100% { transform: translateY(30%) rotate(25deg); }
+    }
+    .holo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+    .holo-chip {
+      width: 46px;
+      height: 34px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #d4a373 0%, #fef3c7 50%, #9e7545 100%);
+      border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+    .holo-body {
+      margin: 1.5rem 0;
+      position: relative;
+      z-index: 2;
+    }
+    .holo-name {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--sand-light);
+    }
+    .holo-email {
+      font-size: 0.85rem;
+      color: var(--sand-gold);
+      font-family: var(--font-mono);
+      margin-top: 0.25rem;
+    }
+    .holo-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      border-top: 1px solid rgba(212, 163, 115, 0.35);
+      padding-top: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 10, 5, 0.9);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-card {
+      background: var(--forest-surface);
+      border: 2px solid var(--sand-border);
+      border-radius: 1.5rem;
+      max-width: 520px;
+      width: 100%;
+      padding: 2rem;
+      box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.9), 0 0 30px -5px var(--purple-glow);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--sand-border-soft);
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--sand-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      background: var(--forest-surface);
+      border: 1px solid var(--sand-border);
+      padding: 0.85rem 1.35rem;
+      border-radius: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--sand-light);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      transition: var(--transition);
+    }
+    .toast-success { border-color: var(--forest-light); background: #0f2e1e; }
+    .toast-error { border-color: var(--rose); background: #3d0c15; }
+    .toast-info { border-color: var(--purple-electric); background: #2a0b3f; }
+
+    .hidden { display: none !important; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+
+    @media (max-width: 860px) {
+      .public-portal-layout { grid-template-columns: 1fr; }
+      .header-inner { height: auto; padding: 1rem; flex-wrap: wrap; }
+      .hero-heading { font-size: 2.2rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="ambient-glow-left"></div>
+  <div class="ambient-glow-right"></div>
+
+  <!-- TOP 1-CLICK INSTANT DEMO HEADER -->
+  <div class="demo-bar">
+    <span>⚡ <strong>1-Click Instant Demo Access:</strong></span>
+    <button class="demo-btn" onclick="directLogin('admin@library.com', 'Admin@123')">👑 Administrator</button>
+    <button class="demo-btn" onclick="directLogin('librarian@library.com', 'Librarian@123')">📖 Librarian</button>
+    <button class="demo-btn" onclick="directLogin('john.doe@example.com', 'Member@123')">👤 Patron Member</button>
+    <span style="margin-left: auto; opacity: 0.85; font-size: 0.7rem;">API Master Key: <code style="font-family: var(--font-mono); color: var(--purple-electric);">lms_master_key_...</code></span>
+  </div>
+
+  <!-- MAIN NAVIGATION HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-logo" onclick="handleLogoClick()">
+        <div class="brand-icon">📚</div>
+        <div>
+          <span class="brand-title">Athena LibraryOS</span>
+          <span class="brand-tag">Cloud Library</span>
+        </div>
+      </div>
+
+      <nav id="navLinksContainer" class="nav-links">
+        <!-- Rendered dynamically -->
+      </nav>
+
+      <div id="authHeaderArea">
+        <button onclick="scrollToAuth()" class="btn btn-purple btn-sm">🔐 Sign In</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: PUBLIC HOMEPAGE & DEDICATED LOGIN PORTAL (SHOWN BEFORE SIGN IN)
+       ========================================================================= -->
+  <div id="view-public" class="page-container">
+    
+    <div class="public-portal-layout">
+      <!-- Left: Public Hero Welcome & Facilities -->
+      <div class="public-hero-side">
+        <div class="campus-badge">
+          <span>🏛️ Academic Cloud Library & Knowledge Vault</span>
+        </div>
+        <h1 class="hero-heading">
+          Catalog, Circulate & Discover <span>Knowledge in the Cloud</span>
+        </h1>
+        <p class="hero-subtext">
+          Welcome to the Athena Central Academic Library. A modern sanctuary for research, software engineering, physics, literature, and history. Instant book checkouts, transparent circulation, and cryptographic privacy.
+        </p>
+
+        <!-- Operating Hours Badge Card -->
+        <div class="feature-card" style="padding: 1.25rem 1.5rem; margin-top: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span style="font-size: 0.85rem; font-weight: 800; color: var(--sand-light);">🕒 Campus Stacks & Research Wings</span>
+            <span style="font-size: 0.75rem; font-weight: 800; color: var(--forest-accent); background: var(--emerald-bg); padding: 0.2rem 0.6rem; border-radius: 9999px;">● Open Today</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.78rem;">
+            <div>Mon – Thu: <strong style="color: var(--sand-gold);">08:00 AM – 10:00 PM</strong></div>
+            <div>Friday: <strong style="color: var(--sand-gold);">08:00 AM – 08:00 PM</strong></div>
+            <div>Saturday: <strong style="color: var(--sand-gold);">10:00 AM – 06:00 PM</strong></div>
+            <div>Sunday: <strong style="color: var(--amber);">12:00 PM – 05:00 PM</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: The Dedicated Login & Access Portal Card -->
+      <div class="auth-card" id="authPortalSection">
+        <div class="auth-card-header">
+          <div class="auth-card-icon">📚</div>
+          <h2 class="auth-card-title" id="authCardTitle">Sign In to Your Library</h2>
+          <p class="auth-card-subtitle">Access your university academic borrowing account</p>
+        </div>
+
+        <!-- 3 Giant Fast 1-Click Role Login Buttons -->
+        <div class="fast-login-box">
+          <div class="fast-login-lbl">
+            <span>⚡ 1-Click Fast Instant Sign In:</span>
+          </div>
+          <div class="fast-roles-grid">
+            <button type="button" onclick="directLogin('admin@library.com', 'Admin@123')" class="fast-role-btn">
+              <span style="font-size: 1.15rem;">👑</span>
+              <span>Admin</span>
+            </button>
+            <button type="button" onclick="directLogin('librarian@library.com', 'Librarian@123')" class="fast-role-btn">
+              <span style="font-size: 1.15rem;">📖</span>
+              <span>Librarian</span>
+            </button>
+            <button type="button" onclick="directLogin('john.doe@example.com', 'Member@123')" class="fast-role-btn">
+              <span style="font-size: 1.15rem;">👤</span>
+              <span>Member</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode Toggle Tabs -->
+        <div class="auth-tabs">
+          <button type="button" class="auth-tab active" id="tabSignIn" onclick="setPublicAuthMode('login')">Sign In</button>
+          <button type="button" class="auth-tab" id="tabRegister" onclick="setPublicAuthMode('register')">Create Patron Account</button>
+        </div>
+
+        <!-- Auth Form -->
+        <form id="publicAuthForm" onsubmit="handleAuthFormSubmit(event)">
+          <div class="form-group hidden" id="groupName">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="inputName" class="form-input" placeholder="e.g. Johnathan Doe">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="inputEmail" required class="form-input" value="admin@library.com" placeholder="patron@library.com">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password *</label>
+            <input type="password" id="inputPassword" required class="form-input" value="Admin@123" placeholder="••••••••">
+          </div>
+
+          <div class="form-group hidden" id="groupRole">
+            <label class="form-label">Patron Role *</label>
+            <select id="selectRole" class="form-select">
+              <option value="member">Member (Patron)</option>
+              <option value="librarian">Librarian (Staff)</option>
+              <option value="admin">Administrator</option>
+            </select>
+          </div>
+
+          <button type="submit" id="btnAuthSubmit" class="btn btn-purple" style="width: 100%; margin-top: 0.5rem; padding: 0.85rem; font-size: 0.95rem;">
+            Sign In & Open Library
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1rem; font-size: 0.72rem; color: var(--sand-dim);">
+          Cryptographic security: <strong>HS256 JWT</strong> &bull; <strong>10-round salted Bcrypt</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIBIB-STYLE FEATURE SHOWCASE -->
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <h2 style="font-size: 1.75rem; font-weight: 800; color: var(--sand-light);">Complete Digital Library Management</h2>
+      <p style="font-size: 0.9rem; color: var(--sand-muted); margin-top: 0.3rem;">Engineered for universities, research institutions, and academic patrons.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3 class="feature-title">Digital Bookshelf & Real-Time Stock</h3>
+        <p class="feature-text">Search by Title, Author, or ISBN with immediate availability counts, shelf location tags, and category filtering.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3 class="feature-title">Smart 14-Day Lending & Restock</h3>
+        <p class="feature-text">Automated 14-day checkout windows, fine calculation engine ($0.50/day policy), and 1-click inventory replenishment on return.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🪪</div>
+        <h3 class="feature-title">Holographic Digital Patron Cards</h3>
+        <p class="feature-text">Digital membership cards in Forest Green and Sand Beige with iridescent Electric Purple metallic sheen, member ID, and password rotation.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3 class="feature-title">Enterprise RBAC & TLS 1.3</h3>
+        <p class="feature-text">3-Tier role authorization (Admin, Librarian, Member) with dual TLS 1.3 servers (ports 8000 & 8443) and API Key validation.</p>
+      </div>
+    </div>
+
+    <!-- CAMPUS GUIDE & FACILITIES -->
+    <div class="feature-card" id="publicAboutSection" style="margin-bottom: 3.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--sand-border-soft); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--sand-light);">Campus Stacks & Research Wings</h2>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); margin-top: 0.2rem;">Physical stacks, study cubicles, computing facilities, and circulation guidelines.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div style="background: var(--forest-bg); border: 1px solid var(--sand-border-soft); border-radius: 1rem; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💻</div>
+          <h4 style="font-size: 1rem; font-weight: 800; color: var(--sand-light);">Level 2 STEM & Coding Lab</h4>
+          <p style="font-size: 0.8rem; color: var(--sand-muted); line-height: 1.5; margin-top: 0.25rem;">
+            60 dual-display workstations with direct indexed access to IEEE Xplore, ACM Digital Library, and SpringerLink.
+          </p>
+        </div>
+
+        <div style="background: var(--forest-bg); border: 1px solid var(--sand-border-soft); border-radius: 1rem; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤫</div>
+          <h4 style="font-size: 1rem; font-weight: 800; color: var(--sand-light);">Level 3 Silent Carrels</h4>
+          <p style="font-size: 0.8rem; color: var(--sand-muted); line-height: 1.5; margin-top: 0.25rem;">
+            Acoustically isolated private pods for deep focus, thesis research, and manuscript reading.
+          </p>
+        </div>
+
+        <div style="background: var(--forest-bg); border: 1px solid var(--sand-border-soft); border-radius: 1rem; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">☕</div>
+          <h4 style="font-size: 1rem; font-weight: 800; color: var(--sand-light);">Level 1 Circulation & Media</h4>
+          <p style="font-size: 0.8rem; color: var(--sand-muted); line-height: 1.5; margin-top: 0.25rem;">
+            Central information desk, automated book return kiosk, collaborative study tables, and campus cafe.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       VIEW 2: INTERNAL DIGITAL LIBRARY WORKSPACE (AFTER SIGNING IN)
+       ========================================================================= -->
+  <div id="view-app" class="page-container hidden">
+
+    <!-- KPI STATS RIBBON -->
+    <div class="app-ribbon">
+      <div class="ribbon-stats">
+        <div class="ribbon-stat-item">
+          <span class="ribbon-stat-val" id="appKpiTotalBooks">6</span>
+          <span class="ribbon-stat-lbl">📚 Total Titles</span>
+        </div>
+        <div class="ribbon-stat-item">
+          <span class="ribbon-stat-val" style="color: var(--forest-accent);" id="appKpiAvailable">14</span>
+          <span class="ribbon-stat-lbl">✅ Available Copies</span>
+        </div>
+        <div class="ribbon-stat-item">
+          <span class="ribbon-stat-val" style="color: var(--amber);" id="appKpiLoans">5</span>
+          <span class="ribbon-stat-lbl">⏳ Active Borrowings</span>
+        </div>
+        <div class="ribbon-stat-item">
+          <span class="ribbon-stat-val" style="color: var(--purple-electric);" id="appKpiUsers">4</span>
+          <span class="ribbon-stat-lbl">👥 Patrons</span>
+        </div>
+      </div>
+
+      <button onclick="openAddBookModal()" id="btnAppAddBookTop" class="btn btn-purple btn-sm hidden">
+        + Add New Book
+      </button>
+    </div>
+
+    <!-- SUB-TAB 1: DIGITAL BOOKSHELF & CATALOG (DEFAULT VIEW) -->
+    <section id="app-tab-catalog">
+      <div class="catalog-controls">
+        <div class="search-row">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="appCatalogSearch" oninput="applyCatalogFilters()" placeholder="Filter collection by Title, Author, or ISBN..." class="catalog-search-input">
+          </div>
+          <select id="appSortSelect" onchange="applyCatalogFilters()" class="form-select" style="width: auto;">
+            <option value="default">Sort by: Default</option>
+            <option value="title-asc">Title: A to Z</option>
+            <option value="year-desc">Published: Newest</option>
+            <option value="copies-desc">Most Available</option>
+          </select>
+        </div>
+
+        <div class="genre-chips" id="appGenreChips">
+          <button onclick="filterCatalogGenre('')" class="chip active">All Genres</button>
+        </div>
+      </div>
+
+      <div class="books-grid" id="appBooksGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- SUB-TAB 2: CIRCULATION & MY LOANS -->
+    <section id="app-tab-loans" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--sand-light);">My Active Borrowings & Circulation</h2>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); margin-top: 0.2rem;">Review return deadlines, calculate overdue fines, and return copies to the shelf.</p>
+        </div>
+        <button onclick="loadLoansData()" class="btn btn-sand btn-sm">🔄 Refresh Loans</button>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Publication Title</th>
+              <th>Borrow Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Accrued Fine</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="appLoansTableBody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SUB-TAB 3: CAMPUS DIRECTORY & FACILITIES -->
+    <section id="app-tab-about" class="hidden">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--sand-light);">Campus Library Guide & Wings</h2>
+        <p style="font-size: 0.85rem; color: var(--sand-muted); margin-top: 0.2rem;">Physical stacks, study cubicles, computing facilities, and circulation guidelines.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="feature-card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">💻</div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--sand-light);">Level 2 STEM & Coding Lab</h3>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); line-height: 1.6;">
+            60 high-speed dual-display workstations, direct repository access to IEEE Xplore, ACM Digital Library, and SpringerLink journals.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🤫</div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--sand-light);">Level 3 Silent Carrels</h3>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); line-height: 1.6;">
+            Acoustically isolated private pods for deep focus, thesis writing, manuscript examination, and quiet research.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">☕</div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--sand-light);">Level 1 Circulation & Media</h3>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); line-height: 1.6;">
+            Main information desk, book returns kiosk, study tables, campus coffee counter, and new arrivals display shelves.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUB-TAB 4: PATRON PROFILE & DIGITAL ID CARD -->
+    <section id="app-tab-profile" class="hidden">
+      <div style="margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--sand-light);">Patron Digital ID & Account Hub</h2>
+        <p style="font-size: 0.85rem; color: var(--sand-muted); margin-top: 0.2rem;">Review your holographic membership card, active JWT token, and update password.</p>
+      </div>
+
+      <div class="grid-2" style="align-items: start;">
+        <!-- Digital Card -->
+        <div class="holo-card">
+          <div class="holo-header">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="font-size: 1.5rem;">📚</span>
+              <span style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; color: var(--sand-text);">ATHENA CENTRAL LIBRARY</span>
+            </div>
+            <div class="holo-chip"></div>
+          </div>
+
+          <div class="holo-body">
+            <div class="holo-name" id="appCardUserName">John Doe</div>
+            <div class="holo-email" id="appCardUserEmail">john.doe@example.com</div>
+            <div style="display: inline-block; margin-top: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px; background: var(--purple-bg); border: 1px solid var(--purple-electric); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #ffffff;" id="appCardUserRole">
+              MEMBER
+            </div>
+          </div>
+
+          <div class="holo-footer">
+            <div>
+              <span style="color: var(--sand-dim); font-size: 0.65rem; display: block;">PATRON ID</span>
+              <span style="color: var(--sand-light); font-weight: 700;" id="appCardPatronId">LIB-2026-0001</span>
+            </div>
+            <div style="text-align: right;">
+              <span style="color: var(--sand-dim); font-size: 0.65rem; display: block;">STATUS</span>
+              <span style="color: var(--forest-accent); font-weight: 700;">● Verified Active</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security & Password -->
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="feature-card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--sand-light); margin-bottom: 0.5rem;">Change Password (Bcrypt Salted)</h3>
+            <p style="font-size: 0.8rem; color: var(--sand-muted); margin-bottom: 1rem;">Update your account password with constant-time 10-round salted bcrypt hashing:</p>
+            <form onsubmit="handlePasswordChange(event)">
+              <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" id="appOldPass" required class="form-input" placeholder="••••••••">
+              </div>
+              <div class="form-group">
+                <label class="form-label">New Password (min 8 chars, 1 uppercase, 1 digit)</label>
+                <input type="password" id="appNewPass" required class="form-input" placeholder="••••••••">
+              </div>
+              <button type="submit" class="btn btn-purple btn-sm">Update Password</button>
+            </form>
+          </div>
+
+          <div class="feature-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h4 style="font-size: 1rem; font-weight: 700; color: var(--sand-light);">Active Signed JWT Bearer Token</h4>
+              <button onclick="copyJwtToken()" class="btn btn-sand btn-sm" style="font-size: 0.72rem;">Copy Token</button>
+            </div>
+            <div id="appJwtDisplay" style="background: var(--forest-bg); border: 1px solid var(--sand-border); border-radius: 0.5rem; padding: 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--sand-text); word-break: break-all; max-height: 80px; overflow-y: auto;">
+              Not authenticated.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUB-TAB 5: STAFF & ADMIN STUDIO -->
+    <section id="app-tab-staff" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--sand-light);">Staff Operations & Admin Studio</h2>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); margin-top: 0.2rem;">Oversee patron directory, inventory, and developer API key access.</p>
+        </div>
+        <button onclick="openAddBookModal()" class="btn btn-purple btn-sm">+ New Publication</button>
+      </div>
+
+      <div class="grid-2">
+        <div class="feature-card">
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--sand-light); margin-bottom: 0.75rem;">Enrolled Patrons & Staff</h3>
+          <div class="table-container" style="max-height: 280px; overflow-y: auto; margin-bottom: 0;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Patron</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="appStaffUsersTable">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--sand-light); margin-bottom: 0.5rem;">API Key Gateway Console</h3>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <input type="text" id="appNewKeyName" placeholder="Client Name (e.g. Mobile App)" class="form-input" style="flex: 1;">
+            <select id="appNewKeyTier" class="form-select" style="width: auto;">
+              <option value="standard">Standard</option>
+              <option value="premium">Premium</option>
+              <option value="admin">Admin</option>
+            </select>
+            <button onclick="createApiKey()" class="btn btn-purple btn-sm">Create</button>
+          </div>
+          <div class="table-container" style="max-height: 200px; overflow-y: auto; margin-bottom: 0;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Key</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="appStaffKeysTable">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUB-TAB 6: SECURITY SPECS -->
+    <section id="app-tab-security" class="hidden">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--sand-light);">Enterprise Security Architecture</h2>
+          <p style="font-size: 0.85rem; color: var(--sand-muted); margin-top: 0.2rem;">Multi-layered security across transport, application, and persistence layers.</p>
+        </div>
+        <a href="/api/v1/health" target="_blank" class="btn btn-sand btn-sm">View Health API ↗</a>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--sand-light);">Dual HTTPS & TLSv1.3</h4>
+          <p style="font-size: 0.82rem; color: var(--sand-muted); line-height: 1.6; margin-top: 0.3rem;">
+            Dual server on ports 8000 and 8443 with TLS 1.2+ minimum, modern cipher suites, and auto-generated X.509 certificates.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔑</div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--sand-light);">API Key Gateway</h4>
+          <p style="font-size: 0.82rem; color: var(--sand-muted); line-height: 1.6; margin-top: 0.3rem;">
+            Protected routes mandate <code style="color: var(--purple-electric);">x-api-key</code> validation with active and revocation checks.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--sand-light);">3-Tier RBAC & JWT</h4>
+          <p style="font-size: 0.82rem; color: var(--sand-muted); line-height: 1.6; margin-top: 0.3rem;">
+            Cryptographically signed HS256 tokens enforcing granular Admin, Librarian, and Member authorization.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--sand-light);">Bcrypt & Zod Validation</h4>
+          <p style="font-size: 0.82rem; color: var(--sand-muted); line-height: 1.6; margin-top: 0.3rem;">
+            10 salt rounds for password hashing. Strict declarative Zod input validation on all parameters.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+
+  <!-- ADD / EDIT BOOK MODAL (STAFF) -->
+  <div id="bookModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--sand-light);" id="modalBookTitleHeading">Add New Publication</h3>
+        <button onclick="closeBookModal()" class="modal-close">&times;</button>
+      </div>
+
+      <form onsubmit="handleSaveBook(event)">
+        <input type="hidden" id="editBookId">
+
+        <div class="form-group">
+          <label class="form-label">Publication Title *</label>
+          <input type="text" id="modalTitleInput" required class="form-input" placeholder="e.g. Clean Architecture">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Author Name *</label>
+          <input type="text" id="modalAuthorInput" required class="form-input" placeholder="e.g. Robert C. Martin">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">ISBN Code *</label>
+            <input type="text" id="modalIsbnInput" required class="form-input" placeholder="978-0134494166">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Published Year *</label>
+            <input type="number" id="modalYearInput" required value="2024" min="1000" class="form-input">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Genre Category *</label>
+            <select id="modalCategorySelect" class="form-select"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Total Copies in Stock *</label>
+            <input type="number" id="modalCopiesInput" required value="3" min="1" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Shelf Location</label>
+          <input type="text" id="modalLocationInput" class="form-input" placeholder="e.g. Shelf CS-04">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Synopsis / Description</label>
+          <textarea id="modalDescInput" rows="3" class="form-input" style="resize: vertical;" placeholder="Overview of publication..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-purple" style="width: 100%; margin-top: 0.5rem;">
+          Save Publication to Catalog
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- =========================================================================
+       JAVASCRIPT CONTROLLER
+       ========================================================================= -->
+  <script>
+    const API_MASTER_KEY = 'lms_master_key_live_9948271635882';
+    let jwtToken = localStorage.getItem('lms_jwt') || null;
+    let currentUser = JSON.parse(localStorage.getItem('lms_user') || 'null');
+
+    let booksData = [];
+    let categoriesData = [];
+    let selectedGenre = '';
+    let publicAuthMode = 'login';
+    let currentAppTab = 'catalog';
+
+    // Toast helper
+    function notify(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type === 'success' ? 'toast-success' : type === 'error' ? 'toast-error' : 'toast-info'}`;
+      toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Unified API caller
+    async function apiRequest(endpoint, method = 'GET', body = null) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': API_MASTER_KEY
+      };
+      if (jwtToken) {
+        headers['Authorization'] = `Bearer ${jwtToken}`;
+      }
+
+      const res = await fetch(endpoint, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : undefined
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error?.message || json.message || 'API request error');
+      }
+      return json;
+    }
+
+    // Direct Login Execution (100% Reliable — no synthetic event bugs)
+    async function directLogin(email, password) {
+      try {
+        const res = await apiRequest('/api/v1/auth/login', 'POST', { email, password });
+        jwtToken = res.data.token;
+        currentUser = res.data.user;
+        localStorage.setItem('lms_jwt', jwtToken);
+        localStorage.setItem('lms_user', JSON.stringify(currentUser));
+        notify(`Welcome back, ${currentUser.name}! Entering library workspace...`, 'success');
+        renderViewState();
+        loadAllData();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    // Router & View State Controller
+    function renderViewState() {
+      const viewPublic = document.getElementById('view-public');
+      const viewApp = document.getElementById('view-app');
+      const navLinksContainer = document.getElementById('navLinksContainer');
+      const authHeaderArea = document.getElementById('authHeaderArea');
+
+      if (currentUser && jwtToken) {
+        // Authenticated -> SHOW DIGITAL LIBRARY APP WORKSPACE
+        viewPublic.classList.add('hidden');
+        viewApp.classList.remove('hidden');
+
+        const isStaff = currentUser.role === 'admin' || currentUser.role === 'librarian';
+        const initials = currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
+        navLinksContainer.innerHTML = `
+          <button onclick="switchAppTab('catalog')" id="app-nav-catalog" class="nav-btn ${currentAppTab === 'catalog' ? 'active' : ''}">📚 Catalog</button>
+          <button onclick="switchAppTab('loans')" id="app-nav-loans" class="nav-btn ${currentAppTab === 'loans' ? 'active' : ''}">📋 My Loans</button>
+          <button onclick="switchAppTab('about')" id="app-nav-about" class="nav-btn ${currentAppTab === 'about' ? 'active' : ''}">🏛️ About</button>
+          <button onclick="switchAppTab('profile')" id="app-nav-profile" class="nav-btn ${currentAppTab === 'profile' ? 'active' : ''}">🪪 Patron Card</button>
+          ${isStaff ? `<button onclick="switchAppTab('staff')" id="app-nav-staff" class="nav-btn ${currentAppTab === 'staff' ? 'active' : ''}">⚙️ Staff Studio</button>` : ''}
+          <button onclick="switchAppTab('security')" id="app-nav-security" class="nav-btn ${currentAppTab === 'security' ? 'active' : ''}">🔒 Security</button>
+        `;
+
+        authHeaderArea.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <div onclick="switchAppTab('profile')" style="display: flex; align-items: center; gap: 0.5rem; background: var(--forest-card); border: 1px solid var(--sand-border); border-radius: 9999px; padding: 0.3rem 0.85rem; cursor: pointer;">
+              <div style="width: 26px; height: 26px; border-radius: 9999px; background: var(--purple-electric); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 900; color: #ffffff;">${initials}</div>
+              <span style="font-size: 0.82rem; font-weight: 800; color: var(--sand-light);">${currentUser.name}</span>
+              <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; background: var(--purple-bg); color: var(--purple-electric); padding: 0.12rem 0.45rem; border-radius: 0.3rem;">${currentUser.role}</span>
+            </div>
+            <button onclick="signOut()" class="btn btn-rose btn-sm" title="Sign Out">🚪 Sign Out</button>
+          </div>
+        `;
+
+        const btnAddTop = document.getElementById('btnAppAddBookTop');
+        if (btnAddTop) {
+          if (isStaff) btnAddTop.classList.remove('hidden');
+          else btnAddTop.classList.add('hidden');
+        }
+
+        switchAppTab(currentAppTab);
+      } else {
+        // Not Authenticated -> SHOW PUBLIC HOMEPAGE & LOGIN (LIBIB STYLE)
+        viewPublic.classList.remove('hidden');
+        viewApp.classList.add('hidden');
+
+        navLinksContainer.innerHTML = `
+          <a href="#authPortalSection" class="nav-btn">🔑 Sign In</a>
+          <a href="#publicAboutSection" class="nav-btn">🏛️ Campus Facilities</a>
+          <a href="/api/v1/health" target="_blank" class="nav-btn">📡 API Status</a>
+        `;
+
+        authHeaderArea.innerHTML = `
+          <button onclick="scrollToAuth()" class="btn btn-purple btn-sm">🔐 Sign In</button>
+        `;
+      }
+    }
+
+    function handleLogoClick() {
+      if (currentUser && jwtToken) {
+        switchAppTab('catalog');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function scrollToAuth() {
+      const el = document.getElementById('authPortalSection');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function switchAppTab(tab) {
+      currentAppTab = tab;
+      const tabs = ['catalog', 'loans', 'about', 'profile', 'staff', 'security'];
+      
+      tabs.forEach(t => {
+        const el = document.getElementById(`app-tab-${t}`);
+        if (el) el.classList.add('hidden');
+        const navEl = document.getElementById(`app-nav-${t}`);
+        if (navEl) navEl.classList.remove('active');
+      });
+
+      const targetEl = document.getElementById(`app-tab-${tab}`);
+      if (targetEl) targetEl.classList.remove('hidden');
+
+      const targetNav = document.getElementById(`app-nav-${tab}`);
+      if (targetNav) targetNav.classList.add('active');
+
+      if (tab === 'loans') loadLoansData();
+      if (tab === 'profile') renderProfileData();
+      if (tab === 'staff') loadStaffStudio();
+      if (tab === 'catalog') applyCatalogFilters();
+    }
+
+    function setPublicAuthMode(mode) {
+      publicAuthMode = mode;
+      document.getElementById('tabSignIn').classList.toggle('active', mode === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+      document.getElementById('groupName').classList.toggle('hidden', mode === 'login');
+      document.getElementById('groupRole').classList.toggle('hidden', mode === 'login');
+      document.getElementById('authCardTitle').textContent = mode === 'login' ? 'Sign In to Your Library' : 'Create Patron Account';
+      document.getElementById('btnAuthSubmit').textContent = mode === 'login' ? 'Sign In & Open Library' : 'Register & Open Library';
+    }
+
+    async function handleAuthFormSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('inputEmail').value.trim();
+      const password = document.getElementById('inputPassword').value;
+
+      if (publicAuthMode === 'login') {
+        await directLogin(email, password);
+      } else {
+        const name = document.getElementById('inputName').value.trim();
+        const role = document.getElementById('selectRole').value;
+        try {
+          const res = await apiRequest('/api/v1/auth/register', 'POST', { name, email, password, role });
+          jwtToken = res.data.token;
+          currentUser = res.data.user;
+          localStorage.setItem('lms_jwt', jwtToken);
+          localStorage.setItem('lms_user', JSON.stringify(currentUser));
+          notify(`Enrolled successfully! Welcome ${currentUser.name}.`, 'success');
+          renderViewState();
+          loadAllData();
+        } catch (err) {
+          notify(err.message, 'error');
+        }
+      }
+    }
+
+    function signOut() {
+      jwtToken = null;
+      currentUser = null;
+      localStorage.removeItem('lms_jwt');
+      localStorage.removeItem('lms_user');
+      renderViewState();
+      notify('Signed out of the library.', 'info');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Profile Renderer
+    function renderProfileData() {
+      if (!currentUser) return;
+      document.getElementById('appCardUserName').textContent = currentUser.name;
+      document.getElementById('appCardUserEmail').textContent = currentUser.email;
+      document.getElementById('appCardUserRole').textContent = currentUser.role.toUpperCase();
+      document.getElementById('appCardPatronId').textContent = `ID: ${currentUser.id.toUpperCase()}`;
+      document.getElementById('appJwtDisplay').textContent = jwtToken || 'Not active';
+    }
+
+    function copyJwtToken() {
+      if (!jwtToken) return;
+      navigator.clipboard.writeText(jwtToken);
+      notify('JWT token copied to clipboard!', 'success');
+    }
+
+    async function handlePasswordChange(e) {
+      e.preventDefault();
+      const oldPassword = document.getElementById('appOldPass').value;
+      const newPassword = document.getElementById('appNewPass').value;
+
+      try {
+        await apiRequest('/api/v1/auth/change-password', 'POST', { oldPassword, newPassword });
+        notify('Password updated! Salted bcrypt hash verified.', 'success');
+        document.getElementById('appOldPass').value = '';
+        document.getElementById('appNewPass').value = '';
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    // Catalog & Shelf Loading
+    async function loadAllData() {
+      try {
+        const [healthRes, booksStatsRes, catsRes, booksRes] = await Promise.all([
+          apiRequest('/api/v1/health'),
+          apiRequest('/api/v1/books/stats'),
+          apiRequest('/api/v1/categories'),
+          apiRequest('/api/v1/books?limit=100')
+        ]);
+
+        const totalBooksEl = document.getElementById('appKpiTotalBooks');
+        if (totalBooksEl) totalBooksEl.textContent = healthRes.data.counts.books;
+        const availEl = document.getElementById('appKpiAvailable');
+        if (availEl) availEl.textContent = booksStatsRes.data.availableCopies;
+        const loansEl = document.getElementById('appKpiLoans');
+        if (loansEl) loansEl.textContent = healthRes.data.counts.activeLoans;
+        const usersEl = document.getElementById('appKpiUsers');
+        if (usersEl) usersEl.textContent = healthRes.data.counts.users;
+
+        categoriesData = catsRes.data;
+        const chipsWrap = document.getElementById('appGenreChips');
+        const modalSelect = document.getElementById('modalCategorySelect');
+
+        if (chipsWrap) {
+          chipsWrap.innerHTML = `<button onclick="filterCatalogGenre('')" class="chip ${!selectedGenre ? 'active' : ''}">All Genres</button>`;
+          categoriesData.forEach(c => {
+            chipsWrap.innerHTML += `<button onclick="filterCatalogGenre('${c.id}')" id="chip-${c.id}" class="chip ${selectedGenre === c.id ? 'active' : ''}">${c.name}</button>`;
+          });
+        }
+        if (modalSelect) {
+          modalSelect.innerHTML = '';
+          categoriesData.forEach(c => {
+            modalSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+          });
+        }
+
+        booksData = booksRes.data;
+        renderBooksGrid();
+      } catch (err) {
+        console.error('Data loading error:', err);
+      }
+    }
+
+    function filterCatalogGenre(catId) {
+      selectedGenre = catId;
+      document.querySelectorAll('.chip').forEach(btn => btn.classList.remove('active'));
+      if (!catId) {
+        const first = document.querySelector('.chip');
+        if (first) first.classList.add('active');
+      } else {
+        const el = document.getElementById(`chip-${catId}`);
+        if (el) el.classList.add('active');
+      }
+      applyCatalogFilters();
+    }
+
+    function applyCatalogFilters() {
+      renderBooksGrid();
+    }
+
+    function renderBooksGrid() {
+      const container = document.getElementById('appBooksGrid');
+      if (!container) return;
+
+      const q = (document.getElementById('appCatalogSearch')?.value || '').toLowerCase().trim();
+      const sort = document.getElementById('appSortSelect')?.value || 'default';
+
+      let list = [...booksData];
+
+      if (selectedGenre) {
+        list = list.filter(b => b.categoryId === selectedGenre);
+      }
+      if (q) {
+        list = list.filter(b => 
+          b.title.toLowerCase().includes(q) ||
+          b.author.toLowerCase().includes(q) ||
+          b.isbn.toLowerCase().includes(q)
+        );
+      }
+
+      if (sort === 'title-asc') list.sort((a,b) => a.title.localeCompare(b.title));
+      if (sort === 'year-desc') list.sort((a,b) => b.publishedYear - a.publishedYear);
+      if (sort === 'copies-desc') list.sort((a,b) => b.availableCopies - a.availableCopies);
+
+      if (list.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1 / -1; padding: 4rem; text-align: center; color: var(--sand-dim); font-weight: 600;">No publications found matching your filter.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(b => {
+        const isAvailable = b.availableCopies > 0;
+        const isStaff = currentUser && (currentUser.role === 'admin' || currentUser.role === 'librarian');
+
+        return `
+          <div class="book-card">
+            <div class="book-tile-cover">
+              <div style="max-width: 80%;">
+                <div class="book-tile-title">${b.title}</div>
+                <div class="book-tile-author">by ${b.author}</div>
+              </div>
+              <div class="book-tile-icon">📖</div>
+            </div>
+
+            <div class="book-meta">
+              <span class="book-cat-badge">${b.categoryName || 'General'}</span>
+              <span class="stock-badge ${isAvailable ? 'stock-available' : 'stock-out'}">
+                <span class="stock-dot"></span>
+                <span>${isAvailable ? `${b.availableCopies} of ${b.totalCopies} Available` : 'Checked Out'}</span>
+              </span>
+            </div>
+
+            <p class="book-desc">${b.description || 'Archived academic publication in University library collection.'}</p>
+
+            <div class="book-specs">
+              <span>ISBN: ${b.isbn}</span>
+              <span>${b.location || 'Shelf CS-01'}</span>
+            </div>
+
+            <div class="book-actions">
+              <button onclick="borrowBook('${b.id}')" ${!isAvailable ? 'disabled' : ''} class="btn btn-purple btn-sm" style="flex: 1;">
+                ${isAvailable ? '⚡ Borrow / Check Out' : 'All Checked Out'}
+              </button>
+              ${isStaff ? `
+                <button onclick="openEditBookModal('${b.id}')" class="btn btn-sand btn-sm">Edit</button>
+                <button onclick="deleteBookAction('${b.id}')" class="btn btn-rose btn-sm">Del</button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function borrowBook(bookId) {
+      if (!jwtToken) {
+        notify('Please sign in to loan books to your patron account.', 'info');
+        renderViewState();
+        return;
+      }
+
+      try {
+        const res = await apiRequest('/api/v1/borrowings/borrow', 'POST', { bookId });
+        notify(`Book borrowed! Due date: ${new Date(res.data.dueDate).toLocaleDateString()}`, 'success');
+        loadAllData();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    // Loans Screen
+    async function loadLoansData() {
+      const tbody = document.getElementById('appLoansTableBody');
+      if (!tbody || !jwtToken) return;
+
+      try {
+        const res = await apiRequest('/api/v1/borrowings/my');
+        const loans = res.data;
+
+        if (loans.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--sand-dim); padding: 3rem;">
+                No active loans found. Browse the catalog to borrow books!
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = loans.map(loan => {
+          const isOverdue = loan.status === 'overdue' || (new Date(loan.dueDate) < new Date() && loan.status === 'borrowed');
+          const isReturned = loan.status === 'returned';
+
+          return `
+            <tr>
+              <td style="font-weight: 700; color: var(--sand-light);">${loan.bookTitle || 'Book ' + loan.bookId}</td>
+              <td style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--sand-muted);">${new Date(loan.borrowDate).toLocaleDateString()}</td>
+              <td style="font-family: var(--font-mono); font-size: 0.8rem; color: ${isOverdue ? 'var(--rose)' : 'var(--sand-text)'};">${new Date(loan.dueDate).toLocaleDateString()}</td>
+              <td>
+                <span style="display: inline-block; padding: 0.2rem 0.6rem; border-radius: 0.35rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; ${
+                  isReturned 
+                    ? 'background: var(--emerald-bg); color: var(--forest-accent);' 
+                    : isOverdue 
+                    ? 'background: var(--rose-bg); color: var(--rose);' 
+                    : 'background: var(--purple-bg); color: var(--purple-electric);'
+                }">
+                  ${loan.status}
+                </span>
+              </td>
+              <td style="font-family: var(--font-mono); font-weight: 700; color: ${loan.fineAmount > 0 ? 'var(--rose)' : 'var(--forest-accent)'};">
+                $${(loan.fineAmount || 0).toFixed(2)}
+              </td>
+              <td style="text-align: right;">
+                ${!isReturned ? `
+                  <button onclick="returnBook('${loan.id}')" class="btn btn-sand btn-sm">Return Book</button>
+                ` : `<span style="color: var(--forest-accent); font-size: 0.75rem; font-weight: 700;">Returned</span>`}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--rose); padding: 2rem;">${err.message}</td></tr>`;
+      }
+    }
+
+    async function returnBook(borrowingId) {
+      try {
+        const res = await apiRequest('/api/v1/borrowings/return', 'POST', { borrowingId });
+        notify(`Book returned! ${res.data.fineAmount > 0 ? `Late fine: $${res.data.fineAmount.toFixed(2)}` : 'Restocked immediately.'}`, 'success');
+        loadLoansData();
+        loadAllData();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    // Staff Studio
+    async function loadStaffStudio() {
+      if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'librarian')) return;
+
+      try {
+        const [usersRes, keysRes] = await Promise.all([
+          apiRequest('/api/v1/users'),
+          apiRequest('/api/v1/keys')
+        ]);
+
+        const usersTable = document.getElementById('appStaffUsersTable');
+        if (usersTable) {
+          usersTable.innerHTML = usersRes.data.map(u => `
+            <tr>
+              <td>
+                <div style="font-weight: 700; color: var(--sand-light);">${u.name}</div>
+                <div style="font-size: 0.75rem; color: var(--sand-dim); font-family: var(--font-mono);">${u.email}</div>
+              </td>
+              <td>
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; background: var(--purple-bg); color: var(--purple-electric); padding: 0.15rem 0.5rem; border-radius: 0.35rem;">
+                  ${u.role}
+                </span>
+              </td>
+              <td>
+                <span style="color: var(--forest-accent); font-weight: 700; font-size: 0.75rem;">● ${u.status || 'Active'}</span>
+              </td>
+            </tr>
+          `).join('');
+        }
+
+        const keysTable = document.getElementById('appStaffKeysTable');
+        if (keysTable) {
+          keysTable.innerHTML = keysRes.data.map(k => `
+            <tr>
+              <td style="font-weight: 700; color: var(--sand-light);">${k.name}</td>
+              <td style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--purple-electric);">${k.key ? k.key.substring(0, 16) + '...' : 'lms_key_...'}</td>
+              <td>
+                <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; ${k.status === 'active' ? 'color: var(--forest-accent);' : 'color: var(--rose);'}">
+                  ● ${k.status}
+                </span>
+              </td>
+              <td style="text-align: right;">
+                ${k.status === 'active' ? `
+                  <button onclick="revokeApiKey('${k.id}')" class="btn btn-rose btn-sm" style="font-size: 0.7rem;">Revoke</button>
+                ` : '<span style="color: var(--sand-dim); font-size: 0.7rem;">Revoked</span>'}
+              </td>
+            </tr>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('Staff loading error:', err);
+      }
+    }
+
+    async function createApiKey() {
+      const name = document.getElementById('appNewKeyName').value.trim();
+      const tier = document.getElementById('appNewKeyTier').value;
+      if (!name) return notify('Please enter a client application name.', 'error');
+
+      try {
+        const res = await apiRequest('/api/v1/keys', 'POST', { name, tier });
+        notify(`API Key generated: ${res.data.key}`, 'success');
+        document.getElementById('appNewKeyName').value = '';
+        loadStaffStudio();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    async function revokeApiKey(keyId) {
+      if (!confirm('Are you sure you want to revoke this API key?')) return;
+      try {
+        await apiRequest(`/api/v1/keys/${keyId}`, 'DELETE');
+        notify('API key revoked.', 'info');
+        loadStaffStudio();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    // Modal Operations
+    function openAddBookModal() {
+      document.getElementById('modalBookTitleHeading').textContent = 'Add New Publication';
+      document.getElementById('editBookId').value = '';
+      document.getElementById('modalTitleInput').value = '';
+      document.getElementById('modalAuthorInput').value = '';
+      document.getElementById('modalIsbnInput').value = '';
+      document.getElementById('modalYearInput').value = new Date().getFullYear();
+      document.getElementById('modalCopiesInput').value = 3;
+      document.getElementById('modalLocationInput').value = '';
+      document.getElementById('modalDescInput').value = '';
+      document.getElementById('bookModal').classList.remove('hidden');
+    }
+
+    function openEditBookModal(bookId) {
+      const b = booksData.find(x => x.id === bookId);
+      if (!b) return;
+
+      document.getElementById('modalBookTitleHeading').textContent = 'Edit Publication';
+      document.getElementById('editBookId').value = b.id;
+      document.getElementById('modalTitleInput').value = b.title;
+      document.getElementById('modalAuthorInput').value = b.author;
+      document.getElementById('modalIsbnInput').value = b.isbn;
+      document.getElementById('modalYearInput').value = b.publishedYear;
+      document.getElementById('modalCopiesInput').value = b.totalCopies;
+      document.getElementById('modalCategorySelect').value = b.categoryId;
+      document.getElementById('modalLocationInput').value = b.location || '';
+      document.getElementById('modalDescInput').value = b.description || '';
+      document.getElementById('bookModal').classList.remove('hidden');
+    }
+
+    function closeBookModal() {
+      document.getElementById('bookModal').classList.add('hidden');
+    }
+
+    async function handleSaveBook(e) {
+      e.preventDefault();
+      const id = document.getElementById('editBookId').value;
+      const payload = {
+        title: document.getElementById('modalTitleInput').value.trim(),
+        author: document.getElementById('modalAuthorInput').value.trim(),
+        isbn: document.getElementById('modalIsbnInput').value.trim(),
+        publishedYear: parseInt(document.getElementById('modalYearInput').value, 10),
+        categoryId: document.getElementById('modalCategorySelect').value,
+        totalCopies: parseInt(document.getElementById('modalCopiesInput').value, 10),
+        location: document.getElementById('modalLocationInput').value.trim(),
+        description: document.getElementById('modalDescInput').value.trim()
+      };
+
+      try {
+        if (id) {
+          await apiRequest(`/api/v1/books/${id}`, 'PUT', payload);
+          notify('Publication updated successfully!', 'success');
+        } else {
+          await apiRequest('/api/v1/books', 'POST', payload);
+          notify('New publication added to catalog!', 'success');
+        }
+        closeBookModal();
+        loadAllData();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    async function deleteBookAction(bookId) {
+      if (!confirm('Are you sure you want to delete this publication from the collection?')) return;
+      try {
+        await apiRequest(`/api/v1/books/${bookId}`, 'DELETE');
+        notify('Publication removed.', 'info');
+        loadAllData();
+      } catch (err) {
+        notify(err.message, 'error');
+      }
+    }
+
+    // Startup
+    document.addEventListener('DOMContentLoaded', () => {
+      renderViewState();
+      loadAllData();
+    });
+  </script>
+</body>
+</html>

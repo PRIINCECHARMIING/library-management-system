@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build --prefix LibraryManagementSystem/client",
+  "outputDirectory": "LibraryManagementSystem/client/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

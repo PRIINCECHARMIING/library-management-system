@@ -1,0 +1,300 @@
+{
+  "categories": [
+    {
+      "id": "cat-1",
+      "name": "Computer Science",
+      "description": "Software engineering, algorithms, system design, and architecture",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "cat-2",
+      "name": "Fiction & Literature",
+      "description": "Classic novels, modern fiction, and literary masterpieces",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "cat-3",
+      "name": "Science & Mathematics",
+      "description": "Physics, cosmology, biology, and applied mathematics",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "cat-4",
+      "name": "History & Philosophy",
+      "description": "World history, civilizations, ethics, and philosophical theories",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    }
+  ],
+  "books": [
+    {
+      "id": "book-1",
+      "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+      "author": "Robert C. Martin",
+      "isbn": "978-0132350884",
+      "categoryId": "cat-1",
+      "categoryName": "Computer Science",
+      "publishedYear": 2008,
+      "totalCopies": 5,
+      "availableCopies": 5,
+      "location": "Shelf CS-01",
+      "description": "Even bad code can function. But if code isn't clean, it can bring a development organization to its knees.",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T11:50:22.735Z"
+    },
+    {
+      "id": "book-2",
+      "title": "The Pragmatic Programmer: Your Journey to Mastery",
+      "author": "Andrew Hunt, David Thomas",
+      "isbn": "978-0201616224",
+      "categoryId": "cat-1",
+      "categoryName": "Computer Science",
+      "publishedYear": 1999,
+      "totalCopies": 3,
+      "availableCopies": 1,
+      "location": "Shelf CS-02",
+      "description": "Illustrates the best practices and major pitfalls of many different aspects of software development.",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T11:50:23.811Z"
+    },
+    {
+      "id": "book-3",
+      "title": "Designing Data-Intensive Applications",
+      "author": "Martin Kleppmann",
+      "isbn": "978-1449373320",
+      "categoryId": "cat-1",
+      "categoryName": "Computer Science",
+      "publishedYear": 2017,
+      "totalCopies": 4,
+      "availableCopies": 4,
+      "location": "Shelf CS-03",
+      "description": "The big ideas behind reliable, scalable, and maintainable systems.",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "book-4",
+      "title": "1984",
+      "author": "George Orwell",
+      "isbn": "978-0451524935",
+      "categoryId": "cat-2",
+      "categoryName": "Fiction & Literature",
+      "publishedYear": 1949,
+      "totalCopies": 2,
+      "availableCopies": 2,
+      "location": "Shelf FIC-05",
+      "description": "A dystopian novel examining government surveillance, totalitarianism, and truth manipulation.",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T11:50:21.343Z"
+    },
+    {
+      "id": "book-5",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "isbn": "978-0060935467",
+      "categoryId": "cat-2",
+      "categoryName": "Fiction & Literature",
+      "publishedYear": 1960,
+      "totalCopies": 3,
+      "availableCopies": 3,
+      "location": "Shelf FIC-08",
+      "description": "Compassionate and dramatic novel exploring racial injustice in the American South.",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T11:50:18.642Z"
+    },
+    {
+      "id": "book-6",
+      "title": "A Brief History of Time",
+      "author": "Stephen Hawking",
+      "isbn": "978-0553380163",
+      "categoryId": "cat-3",
+      "categoryName": "Science & Mathematics",
+      "publishedYear": 1988,
+      "totalCopies": 2,
+      "availableCopies": 2,
+      "location": "Shelf SCI-02",
+      "description": "A landmark exploration of cosmology, black holes, the Big Bang, and the nature of time.",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T11:50:19.809Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-admin-1",
+      "name": "System Administrator",
+      "email": "admin@library.com",
+      "passwordHash": "$2a$10$oDtHoYCGtiSwhfvKVpaUFuZRcGxu/SwsHTC9NhJgICjH8yOxyxDXS",
+      "role": "admin",
+      "status": "active",
+      "phone": "+1-555-0100",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "user-librarian-1",
+      "name": "Sarah Connor",
+      "email": "librarian@library.com",
+      "passwordHash": "$2a$10$Ht1ed1uQfDY6/2Wpe6IoI.0TOsf.SD6RruAdbxXhttmVs3rQdp/Ku",
+      "role": "librarian",
+      "status": "active",
+      "phone": "+1-555-0101",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "user-member-1",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "passwordHash": "$2a$10$Je8v3a9vruXTfAbJncQOjO1Kef4k8dPgPCj9CUawIASsfhyLS.ywK",
+      "role": "member",
+      "status": "active",
+      "phone": "+1-555-0102",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "user-member-2",
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "passwordHash": "$2a$10$Je8v3a9vruXTfAbJncQOjO1Kef4k8dPgPCj9CUawIASsfhyLS.ywK",
+      "role": "member",
+      "status": "active",
+      "phone": "+1-555-0103",
+      "createdAt": "2026-11-05T10:29:19.122Z",
+      "updatedAt": "2026-11-05T10:29:19.122Z"
+    }
+  ],
+  "apiKeys": [
+    {
+      "id": "key-1",
+      "key": "lms_master_key_live_9948271635882",
+      "clientName": "Admin System Console",
+      "status": "active",
+      "tier": "admin",
+      "createdBy": "system",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "key-2",
+      "key": "lms_partner_key_pub_8473920194857",
+      "clientName": "Campus Mobile Client",
+      "status": "active",
+      "tier": "standard",
+      "createdBy": "user-admin-1",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    },
+    {
+      "id": "key-3",
+      "key": "lms_revoked_key_old_1122334455667",
+      "clientName": "Deprecated External Webhook",
+      "status": "revoked",
+      "tier": "standard",
+      "createdBy": "user-admin-1",
+      "createdAt": "2026-11-05T10:29:19.122Z"
+    }
+  ],
+  "borrowings": [
+    {
+      "id": "bor-1793875525527-llwus",
+      "userId": "user-member-1",
+      "userName": "John Doe",
+      "userEmail": "john.doe@example.com",
+      "bookId": "book-5",
+      "bookTitle": "To Kill a Mockingbird",
+      "borrowDate": "2026-11-05T10:45:25.526Z",
+      "dueDate": "2026-11-19T10:45:25.526Z",
+      "returnDate": "2026-11-05T11:50:18.642Z",
+      "status": "returned",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T10:45:25.527Z",
+      "updatedAt": "2026-11-05T11:50:18.643Z"
+    },
+    {
+      "id": "bor-1793875528902-dq53x",
+      "userId": "user-member-1",
+      "userName": "John Doe",
+      "userEmail": "john.doe@example.com",
+      "bookId": "book-6",
+      "bookTitle": "A Brief History of Time",
+      "borrowDate": "2026-11-05T10:45:28.901Z",
+      "dueDate": "2026-11-19T10:45:28.901Z",
+      "returnDate": "2026-11-05T11:50:19.809Z",
+      "status": "returned",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T10:45:28.902Z",
+      "updatedAt": "2026-11-05T11:50:19.810Z"
+    },
+    {
+      "id": "bor-1793875530930-iu9vr",
+      "userId": "user-member-1",
+      "userName": "John Doe",
+      "userEmail": "john.doe@example.com",
+      "bookId": "book-4",
+      "bookTitle": "1984",
+      "borrowDate": "2026-11-05T10:45:30.929Z",
+      "dueDate": "2026-11-19T10:45:30.929Z",
+      "returnDate": "2026-11-05T11:50:21.343Z",
+      "status": "returned",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T10:45:30.930Z",
+      "updatedAt": "2026-11-05T11:50:21.344Z"
+    },
+    {
+      "id": "bor-1793875532738-s0pv3",
+      "userId": "user-member-1",
+      "userName": "John Doe",
+      "userEmail": "john.doe@example.com",
+      "bookId": "book-1",
+      "bookTitle": "Clean Code: A Handbook of Agile Software Craftsmanship",
+      "borrowDate": "2026-11-05T10:45:32.736Z",
+      "dueDate": "2026-11-19T10:45:32.736Z",
+      "returnDate": "2026-11-05T11:50:22.735Z",
+      "status": "returned",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T10:45:32.738Z",
+      "updatedAt": "2026-11-05T11:50:22.736Z"
+    },
+    {
+      "id": "bor-1793875533735-qosj0",
+      "userId": "user-member-1",
+      "userName": "John Doe",
+      "userEmail": "john.doe@example.com",
+      "bookId": "book-2",
+      "bookTitle": "The Pragmatic Programmer: Your Journey to Mastery",
+      "borrowDate": "2026-11-05T10:45:33.733Z",
+      "dueDate": "2026-11-19T10:45:33.733Z",
+      "returnDate": "2026-11-05T11:50:23.811Z",
+      "status": "returned",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T10:45:33.735Z",
+      "updatedAt": "2026-11-05T11:50:23.813Z"
+    },
+    {
+      "id": "bor-1793877356162-juwff",
+      "userId": "user-admin-1",
+      "userName": "System Administrator",
+      "userEmail": "admin@library.com",
+      "bookId": "book-2",
+      "bookTitle": "The Pragmatic Programmer: Your Journey to Mastery",
+      "borrowDate": "2026-11-05T11:15:56.161Z",
+      "dueDate": "2026-11-19T11:15:56.161Z",
+      "returnDate": null,
+      "status": "active",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T11:15:56.162Z"
+    },
+    {
+      "id": "bor-1793877357629-4y6aj",
+      "userId": "user-admin-1",
+      "userName": "System Administrator",
+      "userEmail": "admin@library.com",
+      "bookId": "book-2",
+      "bookTitle": "The Pragmatic Programmer: Your Journey to Mastery",
+      "borrowDate": "2026-11-05T11:15:57.627Z",
+      "dueDate": "2026-11-19T11:15:57.627Z",
+      "returnDate": null,
+      "status": "active",
+      "fineAmount": 0,
+      "createdAt": "2026-11-05T11:15:57.629Z"
+    }
+  ]
+}

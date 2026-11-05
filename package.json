@@ -1,0 +1,10 @@
+{
+  "name": "api-project-lib",
+  "version": "1.0.0",
+  "description": "Library Management System REST API",
+  "scripts": {
+    "start": "npm run start --prefix LibraryManagementSystem/server",
+    "dev": "npm run dev --prefix LibraryManagementSystem/server",
+    "test": "npm test --prefix LibraryManagementSystem/server"
+  }
+}
