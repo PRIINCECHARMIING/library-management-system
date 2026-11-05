@@ -58,6 +58,8 @@ export default function App() {
     setTimeout(() => setToast(null), 4000);
   };
 
+  const API_BASE = import.meta.env.VITE_API_URL || '';
+
   const api = async (endpoint, method = 'GET', body = null) => {
     const headers = {
       'Content-Type': 'application/json',
@@ -65,7 +67,8 @@ export default function App() {
     };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch(endpoint, {
+    const targetUrl = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+    const res = await fetch(targetUrl, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined
