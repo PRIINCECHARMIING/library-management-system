@@ -29,8 +29,9 @@ export default function App() {
   // Auth Form State (Public Portal)
   const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
   const [guestTab, setGuestTab] = useState('login'); // 'login' | 'catalog' | 'about' | 'security'
-  const [authEmail, setAuthEmail] = useState('admin@library.com');
-  const [authPassword, setAuthPassword] = useState('Admin@123');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [authName, setAuthName] = useState('');
   const [authRole, setAuthRole] = useState('member');
 
@@ -284,9 +285,15 @@ export default function App() {
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     if (authMode === 'login') {
-      const email = authEmail || 'admin@library.com';
-      const pass = authPassword || 'Admin@123';
-      await directLogin(email, pass);
+      if (!authEmail.trim()) {
+        notify('Please enter your email address.', 'error');
+        return;
+      }
+      if (!authPassword) {
+        notify('Please enter your password.', 'error');
+        return;
+      }
+      await directLogin(authEmail.trim(), authPassword);
     } else {
       try {
         const res = await api('/api/v1/auth/register', 'POST', {
@@ -532,10 +539,27 @@ export default function App() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                     <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
                     {authMode === 'login' && (
-                      <span onClick={() => notify('Default login password: Admin@123', 'info')} className="libib-forgot-link">Forgot password?</span>
+                      <span onClick={() => notify('Contact system administrator to reset credentials.', 'info')} className="libib-forgot-link">Forgot password?</span>
                     )}
                   </div>
-                  <input type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required className="form-input" placeholder="••••••••" />
+                  <div className="password-input-wrap">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={authPassword}
+                      onChange={e => setAuthPassword(e.target.value)}
+                      required
+                      className="form-input"
+                      placeholder="Enter your password"
+                    />
+                    <button
+                      type="button"
+                      className="btn-toggle-pass"
+                      onClick={() => setShowPassword(prev => !prev)}
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      <span className="pass-eye-icon">{showPassword ? '🙈' : '👁️'}</span>
+                    </button>
+                  </div>
                 </div>
 
                 {authMode === 'register' && (

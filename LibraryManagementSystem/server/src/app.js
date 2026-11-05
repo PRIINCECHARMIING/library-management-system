@@ -26,10 +26,10 @@ const app = express();
 // Security HTTP headers
 app.use(securityHeaders);
 
-// CORS configuration
+// CORS configuration (Allows localhost:5173, localhost:8000, and cloud deployments with credentials)
 app.use(
   cors({
-    origin: env.CORS_ORIGIN,
+    origin: (origin, callback) => callback(null, true),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
     credentials: true

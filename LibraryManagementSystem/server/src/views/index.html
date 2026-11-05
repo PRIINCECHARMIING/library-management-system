@@ -510,6 +510,36 @@
       color: #ffffff;
     }
 
+    /* Password Input Wrap & Show/Hide Eye Toggle */
+    .password-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .password-input-wrap .form-input {
+      padding-right: 2.75rem !important;
+    }
+    .btn-toggle-pass {
+      position: absolute;
+      right: 0.75rem;
+      background: transparent;
+      border: none;
+      color: var(--sand-muted);
+      cursor: pointer;
+      font-size: 1.15rem;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      outline: none;
+    }
+    .btn-toggle-pass:hover {
+      transform: scale(1.15);
+      color: var(--purple-light);
+    }
+
     .libib-site-footer {
       border-top: 1px solid var(--sand-border-soft);
       background: rgba(3, 10, 5, 0.85);
@@ -1219,15 +1249,20 @@
 
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input type="email" id="inputEmail" required class="form-input" value="admin@library.com" placeholder="Enter your email">
+            <input type="email" id="inputEmail" required class="form-input" placeholder="Enter your email">
           </div>
 
           <div class="form-group">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;" id="forgotLinkWrap">
               <label class="form-label" style="margin-bottom: 0;">Password</label>
-              <a href="javascript:void(0)" onclick="notify('Default login password: Admin@123', 'info')" class="libib-forgot-link">Forgot password?</a>
+              <a href="javascript:void(0)" onclick="notify('Contact system administrator to reset credentials.', 'info')" class="libib-forgot-link">Forgot password?</a>
             </div>
-            <input type="password" id="inputPassword" required class="form-input" value="Admin@123" placeholder="••••••••">
+            <div class="password-input-wrap">
+              <input type="password" id="inputPassword" required class="form-input" placeholder="Enter your password">
+              <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('inputPassword', this)" title="Show / Hide Password">
+                <span class="pass-eye-icon">👁️</span>
+              </button>
+            </div>
           </div>
 
           <div class="form-group hidden" id="groupRole">
@@ -1921,14 +1956,25 @@
       }
     }
 
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const isPass = input.type === 'password';
+      input.type = isPass ? 'text' : 'password';
+      const icon = btn.querySelector('.pass-eye-icon');
+      if (icon) {
+        icon.textContent = isPass ? '🙈' : '👁️';
+      }
+    }
+
     async function handleAuthFormSubmit(e) {
       if (e) e.preventDefault();
       let email = document.getElementById('inputEmail')?.value?.trim();
       let password = document.getElementById('inputPassword')?.value;
 
       if (publicAuthMode === 'login') {
-        if (!email) email = 'admin@library.com';
-        if (!password) password = 'Admin@123';
+        if (!email) return notify('Please enter your email address.', 'error');
+        if (!password) return notify('Please enter your password.', 'error');
         await directLogin(email, password);
       } else {
         const name = document.getElementById('inputName')?.value?.trim() || 'New Patron';
