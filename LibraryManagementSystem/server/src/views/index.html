@@ -1910,14 +1910,10 @@
       const btnAuthSubmit = document.getElementById('btnAuthSubmit');
       const forgotLink = document.getElementById('forgotLinkWrap');
       const switchPrompt = document.getElementById('switchPrompt');
-      const demoBox = document.getElementById('demoAccessBox');
-      const authDivider = document.getElementById('authDivider');
 
       if (groupName) groupName.classList.toggle('hidden', mode === 'login');
       if (groupRole) groupRole.classList.toggle('hidden', mode === 'login');
       if (forgotLink) forgotLink.classList.toggle('hidden', mode !== 'login');
-      if (demoBox) demoBox.classList.toggle('hidden', mode !== 'login');
-      if (authDivider) authDivider.classList.toggle('hidden', mode !== 'login');
       if (authCardTitle) authCardTitle.textContent = mode === 'login' ? 'Manager Login' : 'Create Account';
       if (btnAuthSubmit) btnAuthSubmit.textContent = mode === 'login' ? 'Log In' : 'Sign Up';
       if (switchPrompt) {
