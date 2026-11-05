@@ -443,7 +443,117 @@
       line-height: 1.6;
     }
 
-    /* Prominent Login Card */
+    /* ==========================================================================
+       LIBIB-STYLE AUTHENTICATION CARD & LAYOUT (https://www.libib.com/login)
+       ========================================================================== */
+    .libib-auth-container {
+      width: 100%;
+      max-width: 440px;
+      margin: 3.5rem auto 4.5rem;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 10;
+    }
+    .libib-auth-card {
+      background: rgba(14, 42, 26, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--sand-border);
+      border-radius: 1rem;
+      padding: 2.75rem 2.25rem 2.25rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(176, 38, 255, 0.15);
+    }
+    .libib-auth-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--sand-light);
+      margin-bottom: 1.75rem;
+      text-align: left;
+      letter-spacing: -0.02em;
+    }
+    .libib-forgot-link {
+      font-size: 0.8rem;
+      color: var(--purple-light);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .libib-forgot-link:hover {
+      text-decoration: underline;
+      color: #ffffff;
+    }
+    .btn-libib-submit {
+      width: 100%;
+      margin-top: 1.25rem;
+      padding: 0.85rem;
+      font-size: 0.95rem;
+      font-weight: 800;
+      border-radius: 0.65rem;
+    }
+    .libib-signup-prompt {
+      margin-top: 1.75rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--sand-muted);
+    }
+    .libib-signup-prompt a {
+      color: var(--purple-light);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 0.35rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .libib-signup-prompt a:hover {
+      text-decoration: underline;
+      color: #ffffff;
+    }
+
+    .libib-site-footer {
+      border-top: 1px solid var(--sand-border-soft);
+      background: rgba(3, 10, 5, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 2.25rem 1.5rem;
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--sand-dim);
+      position: relative;
+      z-index: 10;
+    }
+    .libib-footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      align-items: center;
+    }
+    .libib-footer-links {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .libib-footer-links a {
+      color: var(--sand-muted);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .libib-footer-links a:hover {
+      color: var(--sand-light);
+    }
+    .libib-footer-copy {
+      color: var(--sand-dim);
+      font-size: 0.78rem;
+    }
+
+    /* Prominent Login Card (Legacy Fallback) */
     .auth-card {
       background: var(--forest-surface);
       border: 2px solid var(--sand-border);
@@ -1091,71 +1201,37 @@
   </header>
 
   <!-- =========================================================================
-       VIEW 1: PUBLIC HOMEPAGE & DEDICATED LOGIN PORTAL (SHOWN BEFORE SIGN IN)
+       VIEW 1: PUBLIC HOMEPAGE & DEDICATED LOGIN PORTAL (LIBIB STYLE)
        ========================================================================= -->
   <div id="view-public" class="page-container">
     
-    <div class="public-portal-layout">
-      <!-- Left: Public Hero Welcome & Facilities -->
-      <div class="public-hero-side">
-        <div class="campus-badge">
-          <span>🏛️ Academic Cloud Library & Knowledge Vault</span>
-        </div>
-        <h1 class="hero-heading">
-          Catalog, Circulate & Discover <span>Knowledge in the Cloud</span>
-        </h1>
-        <p class="hero-subtext">
-          Welcome to the Athena Central Academic Library. A modern sanctuary for research, software engineering, physics, literature, and history. Instant book checkouts, transparent circulation, and cryptographic privacy.
-        </p>
-
-        <!-- Operating Hours Badge Card -->
-        <div class="feature-card" style="padding: 1.25rem 1.5rem; margin-top: 0.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-            <span style="font-size: 0.85rem; font-weight: 800; color: var(--sand-light);">🕒 Campus Stacks & Research Wings</span>
-            <span style="font-size: 0.75rem; font-weight: 800; color: var(--forest-accent); background: var(--emerald-bg); padding: 0.2rem 0.6rem; border-radius: 9999px;">● Open Today</span>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.78rem;">
-            <div>Mon – Thu: <strong style="color: var(--sand-gold);">08:00 AM – 10:00 PM</strong></div>
-            <div>Friday: <strong style="color: var(--sand-gold);">08:00 AM – 08:00 PM</strong></div>
-            <div>Saturday: <strong style="color: var(--sand-gold);">10:00 AM – 06:00 PM</strong></div>
-            <div>Sunday: <strong style="color: var(--amber);">12:00 PM – 05:00 PM</strong></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: The Dedicated Login & Access Portal Card -->
-      <div class="auth-card" id="authPortalSection">
-        <div class="auth-card-header">
-          <div class="auth-card-icon">📚</div>
-          <h2 class="auth-card-title" id="authCardTitle">Sign In to Your Library</h2>
-          <p class="auth-card-subtitle">Access your university academic borrowing account</p>
-        </div>
-
-        <!-- Mode Toggle Tabs -->
-        <div class="auth-tabs">
-          <button type="button" class="auth-tab active" id="tabSignIn" onclick="setPublicAuthMode('login')">Sign In</button>
-          <button type="button" class="auth-tab" id="tabRegister" onclick="setPublicAuthMode('register')">Create Patron Account</button>
-        </div>
+    <!-- Centered Libib-Style Authentication Container (https://www.libib.com/login) -->
+    <div class="libib-auth-container" id="authPortalSection">
+      <div class="libib-auth-card">
+        <h2 class="libib-auth-title" id="authCardTitle">Manager Login</h2>
 
         <!-- Auth Form -->
         <form id="publicAuthForm" onsubmit="handleAuthFormSubmit(event)">
           <div class="form-group hidden" id="groupName">
-            <label class="form-label">Full Name *</label>
-            <input type="text" id="inputName" class="form-input" placeholder="e.g. Johnathan Doe">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="inputName" class="form-input" placeholder="Enter your full name">
           </div>
 
           <div class="form-group">
-            <label class="form-label">Email Address *</label>
-            <input type="email" id="inputEmail" required class="form-input" value="admin@library.com" placeholder="patron@library.com">
+            <label class="form-label">Email</label>
+            <input type="email" id="inputEmail" required class="form-input" value="admin@library.com" placeholder="Enter your email">
           </div>
 
           <div class="form-group">
-            <label class="form-label">Password *</label>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;" id="forgotLinkWrap">
+              <label class="form-label" style="margin-bottom: 0;">Password</label>
+              <a href="javascript:void(0)" onclick="notify('Default login password: Admin@123', 'info')" class="libib-forgot-link">Forgot password?</a>
+            </div>
             <input type="password" id="inputPassword" required class="form-input" value="Admin@123" placeholder="••••••••">
           </div>
 
           <div class="form-group hidden" id="groupRole">
-            <label class="form-label">Patron Role *</label>
+            <label class="form-label">Patron Role</label>
             <select id="selectRole" class="form-select">
               <option value="member">Member (Patron)</option>
               <option value="librarian">Librarian (Staff)</option>
@@ -1163,14 +1239,13 @@
             </select>
           </div>
 
-          <button type="submit" id="btnAuthSubmit" class="btn btn-purple" style="width: 100%; margin-top: 0.5rem; padding: 0.85rem; font-size: 0.95rem;">
-            Sign In & Open Library
+          <button type="submit" id="btnAuthSubmit" class="btn btn-purple btn-libib-submit">
+            Log In
           </button>
         </form>
 
-        <div style="text-align: center; margin-top: 1.25rem; font-size: 0.78rem; color: var(--sand-dim); display: flex; flex-direction: column; gap: 0.35rem;">
-          <div>Default Admin: <code style="color: var(--sand-gold); font-family: var(--font-mono); font-weight: 700;">admin@library.com</code> / <code style="color: var(--sand-gold); font-family: var(--font-mono); font-weight: 700;">Admin@123</code></div>
-          <div style="font-size: 0.7rem; opacity: 0.85;">🔒 Cryptographic Security: <strong>HS256 JWT</strong> &bull; <strong>10-round salted Bcrypt</strong></div>
+        <div class="libib-signup-prompt" id="switchPrompt">
+          Don't have an account? <a href="javascript:void(0)" onclick="setPublicAuthMode('register')">Sign Up!</a>
         </div>
       </div>
     </div>
@@ -1601,6 +1676,24 @@
     </div>
   </div>
 
+  <!-- LIBIB-STYLE SITE FOOTER -->
+  <footer class="libib-site-footer">
+    <div class="libib-footer-inner">
+      <div class="libib-footer-links">
+        <a href="javascript:void(0)" onclick="showGuestTab('catalog')">Catalog</a>
+        <span>&bull;</span>
+        <a href="javascript:void(0)" onclick="showGuestTab('about')">Campus & Stacks</a>
+        <span>&bull;</span>
+        <a href="javascript:void(0)" onclick="showGuestTab('security')">Security</a>
+        <span>&bull;</span>
+        <a href="javascript:void(0)" onclick="notify('Athena Cloud Services: 100% Operational', 'success')">Cloud Status</a>
+      </div>
+      <p class="libib-footer-copy">
+        &copy; 2026 Athena Central Academic Library &bull; Libib-Style Cloud Architecture &bull; All rights reserved.
+      </p>
+    </div>
+  </footer>
+
   <!-- TOAST CONTAINER -->
   <div id="toastContainer" class="toast-container"></div>
 
@@ -1809,12 +1902,23 @@
 
     function setPublicAuthMode(mode) {
       publicAuthMode = mode;
-      document.getElementById('tabSignIn').classList.toggle('active', mode === 'login');
-      document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
-      document.getElementById('groupName').classList.toggle('hidden', mode === 'login');
-      document.getElementById('groupRole').classList.toggle('hidden', mode === 'login');
-      document.getElementById('authCardTitle').textContent = mode === 'login' ? 'Sign In to Your Library' : 'Create Patron Account';
-      document.getElementById('btnAuthSubmit').textContent = mode === 'login' ? 'Sign In & Open Library' : 'Register & Open Library';
+      const groupName = document.getElementById('groupName');
+      const groupRole = document.getElementById('groupRole');
+      const authCardTitle = document.getElementById('authCardTitle');
+      const btnAuthSubmit = document.getElementById('btnAuthSubmit');
+      const forgotLink = document.getElementById('forgotLinkWrap');
+      const switchPrompt = document.getElementById('switchPrompt');
+
+      if (groupName) groupName.classList.toggle('hidden', mode === 'login');
+      if (groupRole) groupRole.classList.toggle('hidden', mode === 'login');
+      if (forgotLink) forgotLink.classList.toggle('hidden', mode !== 'login');
+      if (authCardTitle) authCardTitle.textContent = mode === 'login' ? 'Manager Login' : 'Create Account';
+      if (btnAuthSubmit) btnAuthSubmit.textContent = mode === 'login' ? 'Log In' : 'Sign Up';
+      if (switchPrompt) {
+        switchPrompt.innerHTML = mode === 'login'
+          ? `Don't have an account? <a href="javascript:void(0)" onclick="setPublicAuthMode('register')">Sign Up!</a>`
+          : `Already have an account? <a href="javascript:void(0)" onclick="setPublicAuthMode('login')">Log In!</a>`;
+      }
     }
 
     async function handleAuthFormSubmit(e) {

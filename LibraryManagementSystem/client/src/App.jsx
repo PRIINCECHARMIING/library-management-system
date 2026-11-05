@@ -508,61 +508,63 @@ export default function App() {
             </p>
           </div>
 
-          {/* DEDICATED SIGN IN & REGISTRATION PORTAL */}
-          <div className="auth-portal-card" id="authPortalSection">
-            <div className="auth-portal-header">
-              <div className="auth-portal-icon">📚</div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--sand-50)' }}>
-                {authMode === 'login' ? 'Sign In to Your Library' : 'Create Patron Account'}
+          {/* Centered Libib-Style Authentication Container (https://www.libib.com/login) */}
+          <div className="libib-auth-container" id="authPortalSection">
+            <div className="libib-auth-card">
+              <h2 className="libib-auth-title">
+                {authMode === 'login' ? 'Manager Login' : 'Create Account'}
               </h2>
-              <p style={{ fontSize: '0.85rem', color: 'var(--sand-300)', marginTop: '0.25rem' }}>
-                Enter patron credentials to enter the library workspace
-              </p>
-            </div>
 
-            {/* Mode Switcher Tabs */}
-            <div className="auth-tabs">
-              <button type="button" className={`auth-tab ${authMode === 'login' ? 'active' : ''}`} onClick={() => setAuthMode('login')}>Sign In</button>
-              <button type="button" className={`auth-tab ${authMode === 'register' ? 'active' : ''}`} onClick={() => setAuthMode('register')}>Create Patron Account</button>
-            </div>
+              <form onSubmit={handleAuthSubmit}>
+                {authMode === 'register' && (
+                  <div className="form-group">
+                    <label className="form-label">Full Name</label>
+                    <input type="text" value={authName} onChange={e => setAuthName(e.target.value)} required className="form-input" placeholder="Enter your full name" />
+                  </div>
+                )}
 
-            <form onSubmit={handleAuthSubmit}>
-              {authMode === 'register' && (
                 <div className="form-group">
-                  <label className="form-label">Full Name *</label>
-                  <input type="text" value={authName} onChange={e => setAuthName(e.target.value)} required className="form-input" placeholder="e.g. Johnathan Doe" />
+                  <label className="form-label">Email</label>
+                  <input type="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} required className="form-input" placeholder="Enter your email" />
                 </div>
-              )}
 
-              <div className="form-group">
-                <label className="form-label">Email Address *</label>
-                <input type="email" value={authEmail} onChange={e => setAuthEmail(e.target.value)} required className="form-input" placeholder="patron@library.com" />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Password *</label>
-                <input type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required className="form-input" placeholder="••••••••" />
-              </div>
-
-              {authMode === 'register' && (
                 <div className="form-group">
-                  <label className="form-label">Patron Role *</label>
-                  <select value={authRole} onChange={e => setAuthRole(e.target.value)} className="form-select">
-                    <option value="member">Member (Patron)</option>
-                    <option value="librarian">Librarian (Staff)</option>
-                    <option value="admin">Administrator</option>
-                  </select>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <label className="form-label" style={{ marginBottom: 0 }}>Password</label>
+                    {authMode === 'login' && (
+                      <span onClick={() => notify('Default login password: Admin@123', 'info')} className="libib-forgot-link">Forgot password?</span>
+                    )}
+                  </div>
+                  <input type="password" value={authPassword} onChange={e => setAuthPassword(e.target.value)} required className="form-input" placeholder="••••••••" />
                 </div>
-              )}
 
-              <button type="submit" className="btn btn-purple" style={{ width: '100%', marginTop: '0.5rem', padding: '0.75rem' }}>
-                {authMode === 'login' ? 'Sign In & Open Library' : 'Register & Open Library'}
-              </button>
-            </form>
+                {authMode === 'register' && (
+                  <div className="form-group">
+                    <label className="form-label">Patron Role</label>
+                    <select value={authRole} onChange={e => setAuthRole(e.target.value)} className="form-select">
+                      <option value="member">Member (Patron)</option>
+                      <option value="librarian">Librarian (Staff)</option>
+                      <option value="admin">Administrator</option>
+                    </select>
+                  </div>
+                )}
 
-            <div style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.78rem', color: 'var(--sand-400)', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-              <div>Default Admin: <code style={{ color: 'var(--sand-gold)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>admin@library.com</code> / <code style={{ color: 'var(--sand-gold)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>Admin@123</code></div>
-              <div style={{ fontSize: '0.7rem', opacity: 0.85 }}>🔒 Cryptographic Security: <strong>HS256 JWT</strong> &bull; <strong>10-round salted Bcrypt</strong></div>
+                <button type="submit" className="btn btn-purple btn-libib-submit">
+                  {authMode === 'login' ? 'Log In' : 'Sign Up'}
+                </button>
+              </form>
+
+              <div className="libib-signup-prompt">
+                {authMode === 'login' ? (
+                  <>
+                    Don't have an account? <button type="button" onClick={() => setAuthMode('register')}>Sign Up!</button>
+                  </>
+                ) : (
+                  <>
+                    Already have an account? <button type="button" onClick={() => setAuthMode('login')}>Log In!</button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -1135,6 +1137,24 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* Libib-Style Site Footer */}
+      <footer className="libib-site-footer">
+        <div className="libib-footer-inner">
+          <div className="libib-footer-links">
+            <button type="button" onClick={() => user ? setActiveTab('catalog') : setGuestTab('catalog')}>Catalog</button>
+            <span>&bull;</span>
+            <button type="button" onClick={() => user ? setActiveTab('about') : setGuestTab('about')}>Campus & Stacks</button>
+            <span>&bull;</span>
+            <button type="button" onClick={() => user ? setActiveTab('security') : setGuestTab('security')}>Security</button>
+            <span>&bull;</span>
+            <button type="button" onClick={() => notify('Athena Cloud Services: 100% Operational', 'success')}>Cloud Status</button>
+          </div>
+          <p className="libib-footer-copy">
+            &copy; 2026 Athena Central Academic Library &bull; Libib-Style Cloud Architecture &bull; All rights reserved.
+          </p>
+        </div>
+      </footer>
 
       {/* Toast Notification */}
       {toast && (
