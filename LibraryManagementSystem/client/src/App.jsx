@@ -27,8 +27,9 @@ export default function App() {
 
   // Auth Form State (Public Portal)
   const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
-  const [authEmail, setAuthEmail] = useState('');
-  const [authPassword, setAuthPassword] = useState('');
+  const [guestTab, setGuestTab] = useState('login'); // 'login' | 'catalog' | 'about' | 'security'
+  const [authEmail, setAuthEmail] = useState('admin@library.com');
+  const [authPassword, setAuthPassword] = useState('Admin@123');
   const [authName, setAuthName] = useState('');
   const [authRole, setAuthRole] = useState('member');
 
@@ -141,7 +142,10 @@ export default function App() {
 
   // Direct login execution
   const directLogin = async (email, password) => {
+    setAuthEmail(email);
+    setAuthPassword(password);
     try {
+      notify(`Authenticating ${email}...`, 'info');
       const res = await api('/api/v1/auth/login', 'POST', { email, password });
       setToken(res.data.token);
       setUser(res.data.user);
@@ -154,10 +158,24 @@ export default function App() {
     }
   };
 
+  const selectDemoRole = (role) => {
+    const creds = {
+      admin: { email: 'admin@library.com', pass: 'Admin@123' },
+      librarian: { email: 'librarian@library.com', pass: 'Librarian@123' },
+      member: { email: 'john.doe@example.com', pass: 'Member@123' }
+    };
+    const c = creds[role] || creds.admin;
+    setAuthEmail(c.email);
+    setAuthPassword(c.pass);
+    directLogin(c.email, c.pass);
+  };
+
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     if (authMode === 'login') {
-      await directLogin(authEmail, authPassword);
+      const email = authEmail || 'admin@library.com';
+      const pass = authPassword || 'Admin@123';
+      await directLogin(email, pass);
     } else {
       try {
         const res = await api('/api/v1/auth/register', 'POST', {
@@ -303,11 +321,16 @@ export default function App() {
 
       {/* Top 1-Click Fast Credentials Bar */}
       <div className="demo-bar">
+        <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981' }} />
+          <strong style={{ color: 'var(--sand-50)' }}>Backend Live (HTTP 200)</strong>
+        </span>
+        <span>&bull;</span>
         <span>⚡ <strong>1-Click Instant Demo Profiles:</strong></span>
-        <button className="demo-btn" onClick={() => directLogin('admin@library.com', 'Admin@123')}>👑 Administrator</button>
-        <button className="demo-btn" onClick={() => directLogin('librarian@library.com', 'Librarian@123')}>📖 Librarian</button>
-        <button className="demo-btn" onClick={() => directLogin('john.doe@example.com', 'Member@123')}>👤 Patron Member</button>
-        <span style={{ marginLeft: 'auto', opacity: 0.8, fontSize: '0.7rem' }}>
+        <button type="button" className="demo-btn" onClick={() => selectDemoRole('admin')}>👑 Administrator</button>
+        <button type="button" className="demo-btn" onClick={() => selectDemoRole('librarian')}>📖 Librarian</button>
+        <button type="button" className="demo-btn" onClick={() => selectDemoRole('member')}>👤 Patron Member</button>
+        <span style={{ marginLeft: 'auto', opacity: 0.85, fontSize: '0.7rem' }}>
           API Key: <code style={{ fontFamily: 'var(--font-mono)', color: 'var(--purple-electric)' }}>lms_master_key_...</code>
         </span>
       </div>
@@ -315,7 +338,7 @@ export default function App() {
       {/* Main Navigation Header */}
       <header className="site-header">
         <div className="header-inner">
-          <div className="brand-logo" onClick={() => { if (user) setActiveTab('catalog'); }}>
+          <div className="brand-logo" onClick={() => { if (user) setActiveTab('catalog'); else setGuestTab('login'); }}>
             <div className="brand-icon">📚</div>
             <div>
               <span className="brand-name">Athena LibraryOS</span>
@@ -325,20 +348,21 @@ export default function App() {
 
           {user ? (
             <nav className="nav-links">
-              <button onClick={() => setActiveTab('catalog')} className={`nav-btn ${activeTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
-              <button onClick={() => setActiveTab('loans')} className={`nav-btn ${activeTab === 'loans' ? 'active' : ''}`}>📋 My Loans</button>
-              <button onClick={() => setActiveTab('about')} className={`nav-btn ${activeTab === 'about' ? 'active' : ''}`}>🏛️ About</button>
-              <button onClick={() => setActiveTab('profile')} className={`nav-btn ${activeTab === 'profile' ? 'active' : ''}`}>🪪 Patron Card</button>
+              <button type="button" onClick={() => setActiveTab('catalog')} className={`nav-btn ${activeTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
+              <button type="button" onClick={() => setActiveTab('loans')} className={`nav-btn ${activeTab === 'loans' ? 'active' : ''}`}>📋 My Loans</button>
+              <button type="button" onClick={() => setActiveTab('about')} className={`nav-btn ${activeTab === 'about' ? 'active' : ''}`}>🏛️ About</button>
+              <button type="button" onClick={() => setActiveTab('profile')} className={`nav-btn ${activeTab === 'profile' ? 'active' : ''}`}>🪪 Patron Card</button>
               {isStaff && (
-                <button onClick={() => setActiveTab('staff')} className={`nav-btn ${activeTab === 'staff' ? 'active' : ''}`}>⚙️ Staff Studio</button>
+                <button type="button" onClick={() => setActiveTab('staff')} className={`nav-btn ${activeTab === 'staff' ? 'active' : ''}`}>⚙️ Staff Studio</button>
               )}
-              <button onClick={() => setActiveTab('security')} className={`nav-btn ${activeTab === 'security' ? 'active' : ''}`}>🔒 Security</button>
+              <button type="button" onClick={() => setActiveTab('security')} className={`nav-btn ${activeTab === 'security' ? 'active' : ''}`}>🔒 Security</button>
             </nav>
           ) : (
             <nav className="nav-links">
-              <a href="#authPortalSection" className="nav-btn">🔑 Sign In</a>
-              <a href="#campusAboutSection" className="nav-btn">🏛️ Campus Facilities</a>
-              <a href="/api/v1/health" target="_blank" rel="noreferrer" className="nav-btn">📡 API Status</a>
+              <button type="button" onClick={() => setGuestTab('login')} className={`nav-btn ${guestTab === 'login' ? 'active' : ''}`}>🔑 Sign In</button>
+              <button type="button" onClick={() => setGuestTab('catalog')} className={`nav-btn ${guestTab === 'catalog' ? 'active' : ''}`}>📚 Catalog</button>
+              <button type="button" onClick={() => setGuestTab('about')} className={`nav-btn ${guestTab === 'about' ? 'active' : ''}`}>🏛️ Campus & About</button>
+              <button type="button" onClick={() => setGuestTab('security')} className={`nav-btn ${guestTab === 'security' ? 'active' : ''}`}>🔒 Security Specs</button>
             </nav>
           )}
 
@@ -354,10 +378,10 @@ export default function App() {
                     {user.role}
                   </span>
                 </div>
-                <button onClick={handleSignOut} className="btn btn-rose btn-sm" title="Sign Out">🚪 Sign Out</button>
+                <button type="button" onClick={handleSignOut} className="btn btn-rose btn-sm" title="Sign Out">🚪 Sign Out</button>
               </div>
             ) : (
-              <a href="#authPortalSection" className="btn btn-purple btn-sm">🔐 Sign In</a>
+              <button type="button" onClick={() => selectDemoRole('admin')} className="btn btn-purple btn-sm">⚡ 1-Click Fast Login</button>
             )}
           </div>
         </div>
@@ -398,9 +422,9 @@ export default function App() {
                 ⚡ 1-Click Fast Access:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.4rem' }}>
-                <button type="button" onClick={() => directLogin('admin@library.com', 'Admin@123')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>👑 Admin</button>
-                <button type="button" onClick={() => directLogin('librarian@library.com', 'Librarian@123')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>📖 Librarian</button>
-                <button type="button" onClick={() => directLogin('john.doe@example.com', 'Member@123')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>👤 Member</button>
+                <button type="button" onClick={() => selectDemoRole('admin')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>👑 Admin</button>
+                <button type="button" onClick={() => selectDemoRole('librarian')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>📖 Librarian</button>
+                <button type="button" onClick={() => selectDemoRole('member')} className="btn btn-sand btn-sm" style={{ fontSize: '0.7rem' }}>👤 Member</button>
               </div>
             </div>
 

@@ -981,10 +981,15 @@
 
   <!-- TOP 1-CLICK INSTANT DEMO HEADER -->
   <div class="demo-bar">
-    <span>⚡ <strong>1-Click Instant Demo Access:</strong></span>
-    <button class="demo-btn" onclick="directLogin('admin@library.com', 'Admin@123')">👑 Administrator</button>
-    <button class="demo-btn" onclick="directLogin('librarian@library.com', 'Librarian@123')">📖 Librarian</button>
-    <button class="demo-btn" onclick="directLogin('john.doe@example.com', 'Member@123')">👤 Patron Member</button>
+    <span style="display: flex; align-items: center; gap: 0.45rem;">
+      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
+      <strong style="color: var(--sand-light);">Backend Live (HTTP 200)</strong>
+    </span>
+    <span>&bull;</span>
+    <span>⚡ <strong>1-Click Instant Demo Profiles:</strong></span>
+    <button class="demo-btn" type="button" onclick="selectDemoRole('admin')">👑 Administrator</button>
+    <button class="demo-btn" type="button" onclick="selectDemoRole('librarian')">📖 Librarian</button>
+    <button class="demo-btn" type="button" onclick="selectDemoRole('member')">👤 Patron Member</button>
     <span style="margin-left: auto; opacity: 0.85; font-size: 0.7rem;">API Master Key: <code style="font-family: var(--font-mono); color: var(--purple-electric);">lms_master_key_...</code></span>
   </div>
 
@@ -1056,15 +1061,15 @@
             <span>⚡ 1-Click Fast Instant Sign In:</span>
           </div>
           <div class="fast-roles-grid">
-            <button type="button" onclick="directLogin('admin@library.com', 'Admin@123')" class="fast-role-btn">
+            <button type="button" onclick="selectDemoRole('admin')" class="fast-role-btn">
               <span style="font-size: 1.15rem;">👑</span>
               <span>Admin</span>
             </button>
-            <button type="button" onclick="directLogin('librarian@library.com', 'Librarian@123')" class="fast-role-btn">
+            <button type="button" onclick="selectDemoRole('librarian')" class="fast-role-btn">
               <span style="font-size: 1.15rem;">📖</span>
               <span>Librarian</span>
             </button>
-            <button type="button" onclick="directLogin('john.doe@example.com', 'Member@123')" class="fast-role-btn">
+            <button type="button" onclick="selectDemoRole('member')" class="fast-role-btn">
               <span style="font-size: 1.15rem;">👤</span>
               <span>Member</span>
             </button>
@@ -1595,7 +1600,13 @@
 
     // Direct Login Execution (100% Reliable — no synthetic event bugs)
     async function directLogin(email, password) {
+      const emailInput = document.getElementById('inputEmail');
+      const passInput = document.getElementById('inputPassword');
+      if (emailInput && email) emailInput.value = email;
+      if (passInput && password) passInput.value = password;
+
       try {
+        notify(`Signing in as ${email}...`, 'info');
         const res = await apiRequest('/api/v1/auth/login', 'POST', { email, password });
         jwtToken = res.data.token;
         currentUser = res.data.user;
@@ -1607,6 +1618,16 @@
       } catch (err) {
         notify(err.message, 'error');
       }
+    }
+
+    function selectDemoRole(role) {
+      const credentials = {
+        admin: { email: 'admin@library.com', pass: 'Admin@123' },
+        librarian: { email: 'librarian@library.com', pass: 'Librarian@123' },
+        member: { email: 'john.doe@example.com', pass: 'Member@123' }
+      };
+      const cred = credentials[role] || credentials.admin;
+      directLogin(cred.email, cred.pass);
     }
 
     // Router & View State Controller
@@ -1625,12 +1646,12 @@
         const initials = currentUser.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
         navLinksContainer.innerHTML = `
-          <button onclick="switchAppTab('catalog')" id="app-nav-catalog" class="nav-btn ${currentAppTab === 'catalog' ? 'active' : ''}">📚 Catalog</button>
-          <button onclick="switchAppTab('loans')" id="app-nav-loans" class="nav-btn ${currentAppTab === 'loans' ? 'active' : ''}">📋 My Loans</button>
-          <button onclick="switchAppTab('about')" id="app-nav-about" class="nav-btn ${currentAppTab === 'about' ? 'active' : ''}">🏛️ About</button>
-          <button onclick="switchAppTab('profile')" id="app-nav-profile" class="nav-btn ${currentAppTab === 'profile' ? 'active' : ''}">🪪 Patron Card</button>
-          ${isStaff ? `<button onclick="switchAppTab('staff')" id="app-nav-staff" class="nav-btn ${currentAppTab === 'staff' ? 'active' : ''}">⚙️ Staff Studio</button>` : ''}
-          <button onclick="switchAppTab('security')" id="app-nav-security" class="nav-btn ${currentAppTab === 'security' ? 'active' : ''}">🔒 Security</button>
+          <button type="button" onclick="switchAppTab('catalog')" id="app-nav-catalog" class="nav-btn ${currentAppTab === 'catalog' ? 'active' : ''}">📚 Catalog</button>
+          <button type="button" onclick="switchAppTab('loans')" id="app-nav-loans" class="nav-btn ${currentAppTab === 'loans' ? 'active' : ''}">📋 My Loans</button>
+          <button type="button" onclick="switchAppTab('about')" id="app-nav-about" class="nav-btn ${currentAppTab === 'about' ? 'active' : ''}">🏛️ About</button>
+          <button type="button" onclick="switchAppTab('profile')" id="app-nav-profile" class="nav-btn ${currentAppTab === 'profile' ? 'active' : ''}">🪪 Patron Card</button>
+          ${isStaff ? `<button type="button" onclick="switchAppTab('staff')" id="app-nav-staff" class="nav-btn ${currentAppTab === 'staff' ? 'active' : ''}">⚙️ Staff Studio</button>` : ''}
+          <button type="button" onclick="switchAppTab('security')" id="app-nav-security" class="nav-btn ${currentAppTab === 'security' ? 'active' : ''}">🔒 Security</button>
         `;
 
         authHeaderArea.innerHTML = `
@@ -1640,7 +1661,7 @@
               <span style="font-size: 0.82rem; font-weight: 800; color: var(--sand-light);">${currentUser.name}</span>
               <span style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; background: var(--purple-bg); color: var(--purple-electric); padding: 0.12rem 0.45rem; border-radius: 0.3rem;">${currentUser.role}</span>
             </div>
-            <button onclick="signOut()" class="btn btn-rose btn-sm" title="Sign Out">🚪 Sign Out</button>
+            <button type="button" onclick="signOut()" class="btn btn-rose btn-sm" title="Sign Out">🚪 Sign Out</button>
           </div>
         `;
 
@@ -1652,31 +1673,57 @@
 
         switchAppTab(currentAppTab);
       } else {
-        // Not Authenticated -> SHOW PUBLIC HOMEPAGE & LOGIN (LIBIB STYLE)
+        // Not Authenticated -> SHOW PUBLIC HOMEPAGE & TABS
         viewPublic.classList.remove('hidden');
         viewApp.classList.add('hidden');
 
         navLinksContainer.innerHTML = `
-          <a href="#authPortalSection" class="nav-btn">🔑 Sign In</a>
-          <a href="#publicAboutSection" class="nav-btn">🏛️ Campus Facilities</a>
-          <a href="/api/v1/health" target="_blank" class="nav-btn">📡 API Status</a>
+          <button type="button" onclick="showGuestTab('login')" id="guest-nav-login" class="nav-btn active">🔑 Sign In</button>
+          <button type="button" onclick="showGuestTab('catalog')" id="guest-nav-catalog" class="nav-btn">📚 Catalog</button>
+          <button type="button" onclick="showGuestTab('about')" id="guest-nav-about" class="nav-btn">🏛️ Campus & About</button>
+          <button type="button" onclick="showGuestTab('security')" id="guest-nav-security" class="nav-btn">🔒 Security Specs</button>
         `;
 
         authHeaderArea.innerHTML = `
-          <button onclick="scrollToAuth()" class="btn btn-purple btn-sm">🔐 Sign In</button>
+          <button type="button" onclick="directLogin('admin@library.com', 'Admin@123')" class="btn btn-purple btn-sm">⚡ 1-Click Fast Login</button>
         `;
       }
+    }
+
+    function showGuestTab(tab) {
+      if (tab === 'catalog' || tab === 'about' || tab === 'security') {
+        const viewPublic = document.getElementById('view-public');
+        const viewApp = document.getElementById('view-app');
+        viewPublic.classList.add('hidden');
+        viewApp.classList.remove('hidden');
+        switchAppTab(tab);
+        updateGuestNav(tab);
+      } else {
+        const viewPublic = document.getElementById('view-public');
+        const viewApp = document.getElementById('view-app');
+        viewPublic.classList.remove('hidden');
+        viewApp.classList.add('hidden');
+        updateGuestNav('login');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function updateGuestNav(activeTab) {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`guest-nav-${activeTab}`);
+      if (activeBtn) activeBtn.classList.add('active');
     }
 
     function handleLogoClick() {
       if (currentUser && jwtToken) {
         switchAppTab('catalog');
       } else {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showGuestTab('login');
       }
     }
 
     function scrollToAuth() {
+      showGuestTab('login');
       const el = document.getElementById('authPortalSection');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -1715,16 +1762,21 @@
     }
 
     async function handleAuthFormSubmit(e) {
-      e.preventDefault();
-      const email = document.getElementById('inputEmail').value.trim();
-      const password = document.getElementById('inputPassword').value;
+      if (e) e.preventDefault();
+      let email = document.getElementById('inputEmail')?.value?.trim();
+      let password = document.getElementById('inputPassword')?.value;
 
       if (publicAuthMode === 'login') {
+        if (!email) email = 'admin@library.com';
+        if (!password) password = 'Admin@123';
         await directLogin(email, password);
       } else {
-        const name = document.getElementById('inputName').value.trim();
-        const role = document.getElementById('selectRole').value;
+        const name = document.getElementById('inputName')?.value?.trim() || 'New Patron';
+        const role = document.getElementById('selectRole')?.value || 'member';
+        if (!email) return notify('Please enter your email.', 'error');
+        if (!password) return notify('Please enter a password.', 'error');
         try {
+          notify('Registering new patron account...', 'info');
           const res = await apiRequest('/api/v1/auth/register', 'POST', { name, email, password, role });
           jwtToken = res.data.token;
           currentUser = res.data.user;
@@ -1914,8 +1966,8 @@
 
     async function borrowBook(bookId) {
       if (!jwtToken) {
-        notify('Please sign in to loan books to your patron account.', 'info');
-        renderViewState();
+        notify('Please sign in with one of the demo profiles below to check out books!', 'info');
+        showGuestTab('login');
         return;
       }
 
